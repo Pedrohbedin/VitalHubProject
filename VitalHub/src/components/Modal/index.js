@@ -11,7 +11,7 @@ import { useState } from "react"
 import { BtnListAppointment } from "../BtnListAppointment/BtnListAppointment"
 import { useNavigation } from "@react-navigation/native"
 
-export const CancelModal = ({ show = false, onAction }) => {
+export const CancelModal = ({ show = false, onAction, close }) => {
 
     return (
         show &&
@@ -27,7 +27,7 @@ export const CancelModal = ({ show = false, onAction }) => {
                 <Button onPress={onAction}>
                     <ButtonTitle colorText="#FFFFFF">CONFIRMAR</ButtonTitle>
                 </Button>
-                <TouchableOpacity onPress={onAction}>
+                <TouchableOpacity onPress={close}>
                     <DbLink>Cancelar</DbLink>
                 </TouchableOpacity>
             </ModalContent>
@@ -78,7 +78,7 @@ export const ConsultaModal = ({ show, onAction }) => {
         show &&
         <Modal
             transparent
-            animationType="fade"
+            animationType="slide"
             visible={true}
         >
             <ModalBackground show={show}>

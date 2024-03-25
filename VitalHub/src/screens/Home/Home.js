@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import { Container, SpacedContainer } from "../../components/Container/Style";
 import { Header } from "../../components/Container/Style";
 import { HeaderImage } from "../../components/Image/style";
@@ -12,6 +12,7 @@ import { CancelModal, ConsultaModal, DescModal, ProntuarioModal } from "../../co
 import { Navegator } from "../../components/Navegator/Navegator";
 import { HomeCalendarComponent } from "../../components/Calender";
 import * as Notifications from "expo-notifications"
+import { userDecodeToken } from "../../../utils/Auth";
 
 //Solicita permições de notificação ao iniciar o app
 Notifications.requestPermissionsAsync();
@@ -30,22 +31,28 @@ Notifications.setNotificationHandler({
 
 export function Home({ navigation, route }) {
 
-    const { modal } = route.params;
-
-    useEffect(() => {
-        modal == true && setModalConsulta(true)
-        console.log(modal)
-    }, [modal])
-
-
     const [statusLista, setStatusLista] = useState("agendadas");
     const [modalCancelar, setModalCancelar] = useState(false);
     const [modalProntuario, setModalProntuario] = useState(false);
     const [modalConsulta, setModalConsulta] = useState(false);
     const [modalDesc, setModalDesc] = useState(false);
     const [data, setData] = useState(false);
-    const [tipoConta] = useState("Pa");
-    const [currentItem] = useState()
+    const [tipoConta, setTipoConta] = useState("Pa");
+    const [user, setUser] = useState(null);
+
+    async function profileLoad() {
+        setUser(await userDecodeToken());
+    }
+    useEffect(() => {
+        profileLoad()
+    }, [])
+
+    const { modal } = route.params;
+
+    useEffect(() => {
+        modal == true && setModalConsulta(true)
+        console.log(modal)
+    }, [modal])
 
     const DATA = [
         {
@@ -119,63 +126,63 @@ export function Home({ navigation, route }) {
             trigger: null
         })
     }
-
     return (
-        <>
-            <ProntuarioModal data={data} show3 ={modalProntuario} onAction={() => setModalProntuario(false)} />
-            <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
-            <CancelModal show={modalCancelar} onAction={() => {
-                setModalCancelar(false)
-                handleCallNotifications()
-            }} />
-            <DescModal data={data} show={modalDesc} onAction={() => setModalDesc(false)} />
-            <Header>
-                <SpacedContainer style={{ height: "100%" }} >
-                    <View style={{ flexDirection: "row", gap: 10 }}>
-                        <HeaderImage source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg', }} />
-                        <View style={{ width: "70%" }}>
-                            <Text fieldwidth="100%" margin="0" textAlign="left">Bem vindo</Text>
-                            <MiddleTitle textAlign="left" margin="0" colorText="#FFFFFF" fieldwidth="100%">{tipoConta}. Claudio</MiddleTitle>
+        user === null ? <ActivityIndicator /> :
+            <>
+                <ProntuarioModal data={data} show3={modalProntuario} onAction={() => setModalProntuario(false)} />
+                <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
+                <CancelModal show={modalCancelar} onAction={() => {
+                    setModalCancelar(false)
+                    handleCallNotifications()
+                }} close={() => setModalCancelar(false)} />
+                <DescModal data={data} show={modalDesc} onAction={() => setModalDesc(false)} />
+                <Header>
+                    <SpacedContainer style={{ height: "100%" }} >
+                        <View style={{ flexDirection: "row", gap: 10 }}>
+                            <HeaderImage source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg', }} />
+                            <View style={{ width: "70%" }}>
+                                <Text fieldwidth="100%" margin="0" textAlign="left">Bem vindo</Text>
+                                <MiddleTitle textAlign="left" margin="0" colorText="#FFFFFF" fieldwidth="100%">{user.role === "Paciente  " ? "Pa" : "Dr"}. {user.name}</MiddleTitle>
+                            </View>
                         </View>
-                    </View>
-                    <Icon
-                        size={25}
-                        name='bell'
-                        type='material-community'
-                        color='white'
-                    />
-                </SpacedContainer>
-            </Header>
-            <Container style={{ marginTop: -70 }}>
-                <HomeCalendarComponent />
-                <SpacedContainer>
-                    <BtnListAppointment textButton={"Agendadas"} clickButton={statusLista === "agendadas"} onPress={() => setStatusLista("agendadas")} />
-                    <BtnListAppointment textButton={"Realizadas"} clickButton={statusLista === "realizadas"} onPress={() => setStatusLista("realizadas")} />
-                    <BtnListAppointment textButton={"Canceladas"} clickButton={statusLista === "canceladas"} onPress={() => setStatusLista("canceladas")} />
-                </SpacedContainer>
-                <FlatList
-                    data={DATA}
-                    renderItem={({ item }) => (statusLista == item.situacao && tipoConta != item.tipoConta)
-                        &&
-                        <Card
-                            data={item}
-                            onAction={
-                                () => {
-                                    setData(item)
-                                    statusLista == "agendadas" ?
-                                        setModalCancelar(true)
-                                        :
-                                        tipoConta == "Dr" ? setModalProntuario(true) : navigation.navigate("Prescricao")
+                        <Icon
+                            size={25}
+                            name='bell'
+                            type='material-community'
+                            color='white'
+                        />
+                    </SpacedContainer>
+                </Header>
+                <Container style={{ marginTop: -70 }}>
+                    <HomeCalendarComponent />
+                    <SpacedContainer>
+                        <BtnListAppointment textButton={"Agendadas"} clickButton={statusLista === "agendadas"} onPress={() => setStatusLista("agendadas")} />
+                        <BtnListAppointment textButton={"Realizadas"} clickButton={statusLista === "realizadas"} onPress={() => setStatusLista("realizadas")} />
+                        <BtnListAppointment textButton={"Canceladas"} clickButton={statusLista === "canceladas"} onPress={() => setStatusLista("canceladas")} />
+                    </SpacedContainer>
+                    <FlatList
+                        data={DATA}
+                        renderItem={({ item }) => (statusLista == item.situacao && tipoConta != item.tipoConta)
+                            &&
+                            <Card
+                                data={item}
+                                onAction={
+                                    () => {
+                                        setData(item)
+                                        statusLista == "agendadas" ?
+                                            setModalCancelar(true)
+                                            :
+                                            tipoConta == "Dr" ? setModalProntuario(true) : navigation.navigate("Prescricao")
+                                    }}
+                                onClick={() => {
+                                    statusLista == "agendadas" ? tipoConta == "Pa" ? setModalDesc(true) : "" : null
                                 }}
-                            onClick={() => {
-                                statusLista == "agendadas" ? tipoConta == "Pa" ? setModalDesc(true) : "" : null
-                            }}
-                        />}
-                    keyExtractor={item => item.id}
-                    showsVerticalScrollIndicator={false}
-                />
-                <Navegator tipoConta={tipoConta} onAction={() => setModalConsulta(!modalConsulta)} visible={!modalConsulta} />
-            </Container>
-        </>
+                            />}
+                        keyExtractor={item => item.id}
+                        showsVerticalScrollIndicator={false}
+                    />
+                    <Navegator tipoConta={tipoConta} onAction={() => setModalConsulta(!modalConsulta)} visible={!modalConsulta} />
+                </Container>
+            </>
     )
 }

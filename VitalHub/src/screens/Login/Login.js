@@ -8,17 +8,29 @@ import { Icon } from "react-native-elements"
 import { Text } from "../../components/Text/style";
 import { useState } from "react";
 import api from "../../services/services";
+import AsyncStore from '@react-native-async-storage/async-storage';
 
 export function Login({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [invalid, setInvalid] = useState("");
+
+    const LoginInvalido = () => {
+        setInvalid(true)
+    }
 
     async function Logar() {
         await api.post('/Login', {
             email: email,
             senha: senha
-        }).then(reponse => console.log(reponse)).catch(error => console.log(error))
+        }).then(async (response) => {
+            await AsyncStore.setItem("token", JSON.stringify(response.data))
+            navigation.navigate("Main")
+        }
+        ).catch(
+            LoginInvalido()
+        )
     }
 
     return (
@@ -26,9 +38,8 @@ export function Login({ navigation }) {
             <LogoVitalHub />
             <Title>Entrar ou criar conta</Title>
 
-            <Input placeholder="Usuário ou E-mail" placeholderTextColor="#49B3BA" value={email} onChangeText={txt => setEmail(txt)} />
-            <Input placeholder="Senha" placeholderTextColor="#49B3BA" value={senha} onChangeText={txt => setSenha(txt)} />
-
+            <Input inputMod="email" keyboardType="email-address" placeholder="Usuário ou E-mail" placeholderTextColor="#49B3BA" value={email} onChangeText={txt => setEmail(txt)} />
+            <Input placeholder="Senha" placeholderTextColor="#49B3BA" value={senha} onChangeText={txt => setSenha(txt)} secureTextEntry={true} />
             <GrayLink onPress={() => navigation.navigate('EsqueceuSenha')}>Esqueceu sua senha?</GrayLink>
 
             <Button onPress={Logar}>
