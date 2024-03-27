@@ -14,11 +14,6 @@ export function Login({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [invalid, setInvalid] = useState("");
-
-    const LoginInvalido = () => {
-        setInvalid(true)
-    }
 
     async function Logar() {
         await api.post('/Login', {
@@ -28,8 +23,8 @@ export function Login({ navigation }) {
             await AsyncStore.setItem("token", JSON.stringify(response.data))
             navigation.navigate("Main")
         }
-        ).catch(
-            LoginInvalido()
+        ).catch((error) =>
+            console.log(error)
         )
     }
 

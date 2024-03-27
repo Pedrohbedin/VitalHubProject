@@ -12,7 +12,7 @@ export const GrayLink = styled.Text`
 
 export const LbLink = styled(GrayLink)`
     font-family: "MontserratAlternates_600SemiBold";
-    color: #4D659D;
+    color: ${(props) => props.TextColor || "#4D659D"};
     text-align: center;
 `
 

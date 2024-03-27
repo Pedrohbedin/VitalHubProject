@@ -29,7 +29,7 @@ Notifications.setNotificationHandler({
     })
 })
 
-export function Home({ navigation, route }) {
+export function Home({ navigation }) {
 
     const [statusLista, setStatusLista] = useState("agendadas");
     const [modalCancelar, setModalCancelar] = useState(false);
@@ -37,22 +37,31 @@ export function Home({ navigation, route }) {
     const [modalConsulta, setModalConsulta] = useState(false);
     const [modalDesc, setModalDesc] = useState(false);
     const [data, setData] = useState(false);
-    const [tipoConta, setTipoConta] = useState("Pa");
+    const [tipoConta, setTipoConta] = useState();
     const [user, setUser] = useState(null);
 
     async function profileLoad() {
         setUser(await userDecodeToken());
+        console.log(tipoConta)
     }
     useEffect(() => {
         profileLoad()
     }, [])
 
-    const { modal } = route.params;
+    const [consultasLista, setConsultasLista] = useState(null);
 
     useEffect(() => {
-        modal == true && setModalConsulta(true)
-        console.log(modal)
-    }, [modal])
+        Get()
+    }, [])
+
+
+    async function Get() {
+        await api.get('/Medico').then((response) =>
+            setClinicaLista(response.data)
+        ).catch(
+            (error) => console.log(error)
+        )
+    }
 
     const DATA = [
         {
@@ -120,14 +129,16 @@ export function Home({ navigation, route }) {
         await Notifications.scheduleNotificationAsync({
             content: {
                 title: "Consulta Cancelada",
-                body: "Seu/Sua " + tipoConta == "Pa" ? "Dr" : "Paciênte" + " cancelou a consulta",
+                body: "Seu/Sua " + user.role == "Paciente" ? "Dr" : "Pa" + " cancelou a consulta",
                 sound: '',
             },
             trigger: null
         })
     }
     return (
-        user === null ? <ActivityIndicator /> :
+        user == null ?
+            <ActivityIndicator />
+            :
             <>
                 <ProntuarioModal data={data} show3={modalProntuario} onAction={() => setModalProntuario(false)} />
                 <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />

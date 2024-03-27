@@ -9,8 +9,9 @@ import { Text } from "../../components/Text/style"
 import { userDecodeToken } from "../../../utils/Auth"
 import { useEffect } from "react";
 import { useState } from "react"
+import { LbLink } from "../../components/Link/style"
 
-export function Perfil() {
+export function Perfil({ navigation }) {
     const [user, setUser] = useState(null);
 
     async function profileLoad() {
@@ -19,6 +20,12 @@ export function Perfil() {
     useEffect(() => {
         profileLoad()
     }, [])
+
+    const Logout = () => {
+        AsyncStore.setItem("token", null);
+        navigation.navigate("Login");
+    }
+
     return (
         user === null ? null :
             <ScrollView>
@@ -31,7 +38,7 @@ export function Perfil() {
                     </PerfilForm>
 
                     <MiddleTitle textAlign="left">Data de nascimento</MiddleTitle>
-                    <InfoInput editable={false} />
+                    <InfoInput editable={false} placeholder={""}/>
                     <MiddleTitle textAlign="left">CPF</MiddleTitle>
                     <InfoInput editable={false} keyboardType="numeric" />
                     <MiddleTitle textAlign="left">Endereço</MiddleTitle>
@@ -52,6 +59,7 @@ export function Perfil() {
                     <Button>
                         <ButtonTitle colorText="#FFFFFF">Editar</ButtonTitle>
                     </Button>
+                    <LbLink onPress={Logout} textColor="red">Sair</LbLink>
                 </Container>
             </ScrollView>
     )
