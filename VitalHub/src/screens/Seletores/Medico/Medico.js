@@ -16,7 +16,6 @@ export function Medico({ navigation }) {
         Get()
     }, [])
 
-
     async function Get() {
         await api.get('/Medicos').then((response) =>
             setMedicoLista(response.data)
@@ -24,6 +23,7 @@ export function Medico({ navigation }) {
             (error) => console.log(error)
         )
     }
+    
     return (
         <Container>
             <Title>Selecionar médico</Title>

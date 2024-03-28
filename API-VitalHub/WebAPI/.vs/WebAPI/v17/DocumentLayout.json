@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "WebAPI\\Controllers\\ConsultasController.cs",
               "ToolTip": "C:\\Users\\42470848873\\Desktop\\VitalHubProject\\API-VitalHub\\WebAPI\\WebAPI\\Controllers\\ConsultasController.cs",
               "RelativeToolTip": "WebAPI\\Controllers\\ConsultasController.cs",
-              "ViewState": "AQIAABMAAAAAAAAAAAAQwCMAAABhAAAA",
+              "ViewState": "AQIAABYAAAAAAAAAAAAgwCMAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-27T20:15:07.559Z",
               "EditorCaption": ""
@@ -51,8 +51,7 @@
               "RelativeToolTip": "WebAPI\\Interfaces\\IConsultaRepository.cs",
               "ViewState": "AQIAAAUAAAAAAAAAAAAxwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-27T20:15:00.536Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-27T20:15:00.536Z"
             },
             {
               "$type": "Document",
@@ -64,8 +63,7 @@
               "RelativeToolTip": "WebAPI\\Interfaces\\IMedicoRepository.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-27T20:14:54.495Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-27T20:14:54.495Z"
             },
             {
               "$type": "Document",
@@ -77,8 +75,7 @@
               "RelativeToolTip": "WebAPI\\Repositories\\ConsultaRepository.cs",
               "ViewState": "AQIAADAAAAAAAAAAAAAvwDoAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-27T19:51:57.446Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-27T19:51:57.446Z"
             }
           ]
         }

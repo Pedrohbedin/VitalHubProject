@@ -23,27 +23,27 @@ export const Card = ({
                     <View style={{ gap: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <CardImage source={{ uri: `${urlFotoPaciente}`, }} />
                         <View style={{ gap: 7, alignItems: "center", padding: 0, flexDirection: "column" }}>
-                            <Title fieldWidth="100%" textAlign="left" margin="0">{data.nome}</Title>
+                            <Title fieldWidth="100%" textAlign="left" margin="0">data</Title>
                             <View style={{ flexDirection: 'row', gap: 15 }}>
-                                <Text margin="0px" fieldWidth="auto">{data.idade} anos</Text>
+                                <Text margin="0px" fieldWidth="auto">anos</Text>
 
-                                <Text margin="0px" fieldWidth="auto">{`\u2022 ${data.tipoConsulta}`}</Text>
+                                <Text margin="0px" fieldWidth="auto">`\u2022 ${data.prioridade.prioridade}`</Text>
                             </View>
-                            <Text margin="0" colorText={data.situacao == "agendadas" ? '#49B3BA' : '#4E4B59'} fieldWidth="100px" textAlign="center" backgroundColor={data.situacao == "agendadas" ? '#E8FCFD' : '#F1F0F5'} borderRadius="5px">
+                            <Text margin="0" colorText={data.situacao.situacao == "Agendada" ? '#49B3BA' : '#4E4B59'} fieldWidth="100px" textAlign="center" backgroundColor={data.situacao == "Agendada" ? '#E8FCFD' : '#F1F0F5'} borderRadius="5px">
                                 <Icon
                                     size={14}
                                     name='clockcircle'
                                     type='antdesign'
-                                    color={data.situacao == "agendadas" ? '#49B3BA' : '#4E4B59'}
-                                /> {data.horario}</Text>
+                                    color={data.situacao.situacao == "Agendada" ? '#49B3BA' : '#4E4B59'}
+                                /> data.horario</Text>
                         </View>
                     </View>
                     <View style={{ justifyContent: "flex-end", height: 80 }}>
                         <TouchableOpacity onPress={onAction}>
-                            <Text fieldWidth="auto" margin="0" fontFamily="MontserratAlternates_500Medium" colorText={data.situacao == "agendadas" ? "#C81D25" : "#344F8F"} fontSize="12px">
+                            <Text fieldWidth="auto" margin="0" fontFamily="MontserratAlternates_500Medium" colorText={data.situacao.situacao == "Agendada" ? "#C81D25" : "#344F8F"} fontSize="12px">
                                 {
-                                    data.situacao == "agendadas" ? "Cancelar" :
-                                        data.situacao == "realizadas" ? "Ver prontuário" : ""
+                                    data.situacao.situacao == "Agendada" ? "Cancelar" :
+                                        data.situacao.situacao == "Realizada" ? "Ver prontuário" : ""
                                 }
                             </Text>
                         </TouchableOpacity>
