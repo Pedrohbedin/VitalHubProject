@@ -11,7 +11,9 @@ import { Card } from "../../components/Card/Card";
 import { CancelModal, ConsultaModal, DescModal, ProntuarioModal } from "../../components/Modal";
 import { Navegator } from "../../components/Navegator/Navegator";
 import { HomeCalendarComponent } from "../../components/Calender";
-import * as Notifications from "expo-notifications"
+import * as Notifications from "expo-notifications";
+import { userDecodeToken } from "../../../utils/Auth";
+import api from "../../services/services";
 
 //Solicita permições de notificação ao iniciar o app
 Notifications.requestPermissionsAsync();
@@ -122,7 +124,7 @@ export function Home({ navigation, route }) {
 
     return (
         <>
-            <ProntuarioModal data={data} show3 ={modalProntuario} onAction={() => setModalProntuario(false)} />
+            <ProntuarioModal data={data} show3={modalProntuario} onAction={() => setModalProntuario(false)} />
             <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
             <CancelModal show={modalCancelar} onAction={() => {
                 setModalCancelar(false)
