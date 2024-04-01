@@ -5,29 +5,32 @@ import { DbLink } from "../../../components/Link/style"
 import { Container } from "../../../components/Container/Style"
 import { CardMedico } from "../../../components/Card/Card"
 import { useState } from "react"
+import { useEffect } from "react"
+import api from "../../../services/services"
 
 export function Medico({ navigation }) {
 
     const [selectedId, setSelectedId] = useState("");
-    
-    DATA = [
-        {
-            id: "3",
-            nome: "teste",
-            especialidade: "sla, teste"
-        },
-        {
-            id: "4",
-            nome: "Dr sla",
-            especialidade: "teste, sla"
-        },
-    ]
+    const [medicoLista, setMedicoLista] = useState(null);
+
+    useEffect(() => {
+        Get()
+    }, [])
+
+    async function Get() {
+        await api.get('/Medicos').then((response) =>
+            setMedicoLista(response.data)
+        ).catch(
+            (error) => console.log(error)
+        )
+    }
+
     return (
         <Container>
             <Title>Selecionar médico</Title>
             <FlatList
                 style={{ width: "90%" }}
-                data={DATA}
+                data={medicoLista}
                 renderItem={({ item }) => <CardMedico data={item} onPress={() => setSelectedId(item.id)} borderColor={item.id === selectedId ? '#496BBA' : '#FFFFFF'} />}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false} />

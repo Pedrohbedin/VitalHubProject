@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import { Container, SpacedContainer } from "../../components/Container/Style";
 import { Header } from "../../components/Container/Style";
 import { HeaderImage } from "../../components/Image/style";
@@ -40,67 +40,42 @@ export function Home({ navigation, route }) {
     }, [modal])
 
 
-    const [statusLista, setStatusLista] = useState("agendadas");
+    const [statusLista, setStatusLista] = useState("Agendada");
     const [modalCancelar, setModalCancelar] = useState(false);
     const [modalProntuario, setModalProntuario] = useState(false);
     const [modalConsulta, setModalConsulta] = useState(false);
     const [modalDesc, setModalDesc] = useState(false);
-    const [data, setData] = useState(false);
-    const [tipoConta] = useState("Pa");
-    const [currentItem] = useState()
+    const [user, setUser] = useState(null);
+    const [consultasLista, setConsultasLista] = useState(null);
 
-    const DATA = [
-        {
-            id: 'bd1acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            horario: '14:00',
-            nome: 'Pedro Carlos',
-            email: 'teste@gmail.com',
-            idade: '18',
-            tipoConsulta: 'Urgente',
-            situacao: 'canceladas',
-            tipoConta: "Pa"
-        },
-        {
-            id: 'bd2acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            horario: '14:00',
-            nome: 'Andre Silva',
-            email: 'teste@gmail.com',
-            idade: '18',
-            tipoConsulta: 'Urgente',
-            situacao: 'realizadas',
-            tipoConta: "Pa"
-        },
-        {
-            id: 'bd3acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            horario: '14:00',
-            nome: 'Doutor Jose ',
-            email: 'teste@gmail.com',
-            idade: '18',
-            tipoConsulta: 'Urgente',
-            situacao: 'agendadas',
-            tipoConta: "Dr"
-        },
-        {
-            id: 'bd4acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            horario: '14:00',
-            nome: 'Doutor Carlos',
-            idade: '18',
-            email: 'teste@gmail.com',
-            tipoConsulta: 'Urgente',
-            situacao: 'realizadas',
-            tipoConta: "Dr"
-        },
-        {
-            id: 'bd5acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            horario: '14:00',
-            nome: 'Felipe Sousa',
-            idade: '15',
-            email: 'teste@gmail.com',
-            tipoConsulta: 'Urgente',
-            situacao: 'realizadas',
-            tipoConta: "Pa"
-        },
-    ];
+    async function profileLoad() {
+        setUser(await userDecodeToken());
+    }
+
+    async function Get() {
+        if (user?.role == "Medico") {
+            await api.get(`/Consultas/ConsultasMedico?Id=${user?.id}`).then((response) =>
+                setConsultasLista(response.data)
+            ).catch(
+                (error) => console.log(error)
+            )
+        }
+        else {
+            await api.get(`/Consultas?Id=${user?.id}`).then((response) =>
+                setConsultasLista(response.data)
+            ).catch(
+                (error) => console.log(error)
+            )
+        }
+    }
+
+    useEffect(() => {
+        profileLoad()
+    }, [])
+
+    useEffect(() => {
+        Get()
+    }, [user])
 
     const handleCallNotifications = async () => {
 
@@ -115,7 +90,7 @@ export function Home({ navigation, route }) {
         await Notifications.scheduleNotificationAsync({
             content: {
                 title: "Consulta Cancelada",
-                body: "Seu/Sua " + tipoConta == "Pa" ? "Dr" : "Paciênte" + " cancelou a consulta",
+                body: "Seu/Sua " + user?.role == "Paciente" ? "Médico" : "Paciênte" + " cancelou a consulta",
                 sound: '',
             },
             trigger: null
@@ -123,61 +98,68 @@ export function Home({ navigation, route }) {
     }
 
     return (
-        <>
-            <ProntuarioModal data={data} show3={modalProntuario} onAction={() => setModalProntuario(false)} />
-            <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
-            <CancelModal show={modalCancelar} onAction={() => {
-                setModalCancelar(false)
-                handleCallNotifications()
-            }} />
-            <DescModal data={data} show={modalDesc} onAction={() => setModalDesc(false)} />
-            <Header>
-                <SpacedContainer style={{ height: "100%" }} >
-                    <View style={{ flexDirection: "row", gap: 10 }}>
-                        <HeaderImage source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg', }} />
-                        <View style={{ width: "70%" }}>
-                            <Text fieldwidth="100%" margin="0" textAlign="left">Bem vindo</Text>
-                            <MiddleTitle textAlign="left" margin="0" colorText="#FFFFFF" fieldwidth="100%">{tipoConta}. Claudio</MiddleTitle>
-                        </View>
-                    </View>
-                    <Icon
-                        size={25}
-                        name='bell'
-                        type='material-community'
-                        color='white'
-                    />
-                </SpacedContainer>
-            </Header>
-            <Container style={{ marginTop: -70 }}>
-                <HomeCalendarComponent />
-                <SpacedContainer>
-                    <BtnListAppointment textButton={"Agendadas"} clickButton={statusLista === "agendadas"} onPress={() => setStatusLista("agendadas")} />
-                    <BtnListAppointment textButton={"Realizadas"} clickButton={statusLista === "realizadas"} onPress={() => setStatusLista("realizadas")} />
-                    <BtnListAppointment textButton={"Canceladas"} clickButton={statusLista === "canceladas"} onPress={() => setStatusLista("canceladas")} />
-                </SpacedContainer>
-                <FlatList
-                    data={DATA}
-                    renderItem={({ item }) => (statusLista == item.situacao && tipoConta != item.tipoConta)
-                        &&
-                        <Card
-                            data={item}
-                            onAction={
-                                () => {
-                                    setData(item)
-                                    statusLista == "agendadas" ?
-                                        setModalCancelar(true)
-                                        :
-                                        tipoConta == "Dr" ? setModalProntuario(true) : navigation.navigate("Prescricao")
-                                }}
-                            onClick={() => {
-                                statusLista == "agendadas" ? tipoConta == "Pa" ? setModalDesc(true) : "" : null
-                            }}
-                        />}
-                    keyExtractor={item => item.id}
-                    showsVerticalScrollIndicator={false}
-                />
-                <Navegator tipoConta={tipoConta} onAction={() => setModalConsulta(!modalConsulta)} visible={!modalConsulta} />
-            </Container>
-        </>
+        user == null ?
+            <ActivityIndicator animating={true} />
+            :
+            consultasLista == null ?
+                <ActivityIndicator animating={true} />
+                :
+                <>
+                    <ProntuarioModal data={consultasLista} show3={modalProntuario} onAction={() => setModalProntuario(false)} />
+                    <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
+                    <CancelModal show={modalCancelar} onAction={() => {
+                        setModalCancelar(false)
+                        handleCallNotifications()
+                    }} />
+                    <DescModal data={consultasLista} show={modalDesc} onAction={() => setModalDesc(false)} />
+                    <Header>
+                        <SpacedContainer style={{ height: "100%" }} >
+                            <View style={{ flexDirection: "row", gap: 10 }}>
+                                <HeaderImage source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg', }} />
+                                <View style={{ width: "70%" }}>
+                                    <Text fieldwidth="100%" margin="0" textAlign="left">Bem vindo</Text>
+                                    <MiddleTitle textAlign="left" margin="0" colorText="#FFFFFF" fieldwidth="100%">{user?.role == "Paciente" ? "Pa. " : "Dr. "} {user.name}</MiddleTitle>
+                                </View>
+                            </View>
+                            <Icon
+                                size={25}
+                                name='bell'
+                                type='material-community'
+                                color='white'
+                            />
+                        </SpacedContainer>
+                    </Header>
+                    <Container style={{ marginTop: -70 }}>
+                        <HomeCalendarComponent />
+                        <SpacedContainer>
+                            <BtnListAppointment textButton={"Agendadas"} clickButton={statusLista === "Agendada"} onPress={() => setStatusLista("Agendada")} />
+                            <BtnListAppointment textButton={"Realizadas"} clickButton={statusLista === "Realizada"} onPress={() => setStatusLista("Realizada")} />
+                            <BtnListAppointment textButton={"Canceladas"} clickButton={statusLista === "Cancelada"} onPress={() => setStatusLista("Cancelada")} />
+                        </SpacedContainer>
+                        <FlatList
+                            data={consultasLista}
+                            renderItem={({ item }) =>
+                                (item.situacao.situacao == statusLista)
+                                && <Card
+                                    role={user?.role}
+                                    data={item}
+                                    onAction={
+                                        () => {
+                                            setData(item)
+                                            statusLista == "Agendada" ?
+                                                setModalCancelar(true)
+                                                :
+                                                user?.role == "Medico" ? setModalProntuario(true) : navigation.navigate("Prescricao")
+                                        }}
+                                    onClick={() => {
+                                        statusLista == "Agendada" ? user?.role == "Paciente" ? setModalDesc(true) : "" : null
+                                    }}
+                                />}
+                            keyExtractor={item => item.id}
+                            showsVerticalScrollIndicator={false}
+                        />
+                        <Navegator tipoConta={user?.role} onAction={() => setModalConsulta(!modalConsulta)} visible={!modalConsulta} />
+                    </Container>
+                </>
     )
 }

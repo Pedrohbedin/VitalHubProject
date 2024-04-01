@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements"
 
 export const Navegator = ({ tipoConta = "", onAction, visible }) => {
 
-    return tipoConta == "Dr" ? (
+    return tipoConta == "Medico" ? (
         <>
 
         </>
