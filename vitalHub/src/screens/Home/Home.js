@@ -36,7 +36,6 @@ export function Home({ navigation, route }) {
 
     useEffect(() => {
         modal == true && setModalConsulta(true)
-        console.log(modal)
     }, [modal])
 
 
@@ -47,35 +46,27 @@ export function Home({ navigation, route }) {
     const [modalDesc, setModalDesc] = useState(false);
     const [user, setUser] = useState(null);
     const [consultasLista, setConsultasLista] = useState(null);
+    const [dataConsulta, setDataConsulta] = useState(null);
 
     async function profileLoad() {
         setUser(await userDecodeToken());
-    }
-
-    async function Get() {
-        if (user?.role == "Medico") {
-            await api.get(`/Consultas/ConsultasMedico?Id=${user?.id}`).then((response) =>
-                setConsultasLista(response.data)
-            ).catch(
-                (error) => console.log(error)
-            )
-        }
-        else {
-            await api.get(`/Consultas?Id=${user?.id}`).then((response) =>
-                setConsultasLista(response.data)
-            ).catch(
-                (error) => console.log(error)
-            )
-        }
     }
 
     useEffect(() => {
         profileLoad()
     }, [])
 
+    async function Get() {
+        await api.get(`/${user?.role}s/BuscarPorData?data=${dataConsulta}&id=${user.id}`).then((response) =>
+            setConsultasLista(response.data)
+        ).catch(
+            (error) => console.log(error)
+        )
+    }
+
     useEffect(() => {
         Get()
-    }, [user])
+    }, [user, dataConsulta])
 
     const handleCallNotifications = async () => {
 
@@ -130,7 +121,7 @@ export function Home({ navigation, route }) {
                         </SpacedContainer>
                     </Header>
                     <Container style={{ marginTop: -70 }}>
-                        <HomeCalendarComponent />
+                        <HomeCalendarComponent setDataConsulta={setDataConsulta} />
                         <SpacedContainer>
                             <BtnListAppointment textButton={"Agendadas"} clickButton={statusLista === "Agendada"} onPress={() => setStatusLista("Agendada")} />
                             <BtnListAppointment textButton={"Realizadas"} clickButton={statusLista === "Realizada"} onPress={() => setStatusLista("Realizada")} />
@@ -154,7 +145,8 @@ export function Home({ navigation, route }) {
                                     onClick={() => {
                                         statusLista == "Agendada" ? user?.role == "Paciente" ? setModalDesc(true) : "" : null
                                     }}
-                                />}
+                                />
+                            }
                             keyExtractor={item => item.id}
                             showsVerticalScrollIndicator={false}
                         />

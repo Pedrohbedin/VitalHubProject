@@ -21,9 +21,9 @@ export const Card = ({
                     marginHorizontal: 20, flexDirection: 'row', alignItems: 'center'
                 }}>
                 <SpacedContainer>
-                    <View style={{ gap: 10, flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ gap: 10, flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                         <CardImage source={{ uri: `${urlFotoPaciente}`, }} />
-                        <View style={{ gap: 7, alignItems: "center", padding: 0, flexDirection: "column" }}>
+                        <View style={{ gap: 7, alignItems: "left", padding: 0, flexDirection: "column" }}>
                             <Title fieldWidth="100%" textAlign="left" margin="0">{role == "Medico" ? data.paciente.idNavigation.nome : data.medicoClinica.medico.idNavigation.nome}</Title>
                             <View style={{ flexDirection: 'row', gap: 15 }}>
                                 <Text margin="0px" fieldWidth="auto">17 anos</Text>

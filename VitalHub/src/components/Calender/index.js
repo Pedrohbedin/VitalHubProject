@@ -82,7 +82,7 @@ const CalendarComponent = () => {
 
 export default CalendarComponent;
 
-export const HomeCalendarComponent = () => {
+export const HomeCalendarComponent = ({ setDataConsulta }) => {
 
   const dataAtual = new Date()
 
@@ -97,6 +97,7 @@ export const HomeCalendarComponent = () => {
 
   return (
     <StyledCalendarStrip
+      onDateSelected={date => setDataConsulta(moment(date).format("YYYY-MM-DD"))}
       /* animação e seleção de cada data */
       calendarAnimation={{ type: "sequence", duration: 30 }}
       daySelectionAnimation={styles.selectedAnimationStyle}
