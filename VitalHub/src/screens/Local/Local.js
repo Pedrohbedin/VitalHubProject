@@ -19,15 +19,27 @@ import { Text } from "../../components/Text/style"
 import { Title } from "../../components/Title/style"
 import { DbLink } from "../../components/Link/style"
 
-export function Local({ navigation }) {
+export function Local({ navigation, route }) {
 
     const mapReference = useRef()
-    const [dark, setDark] = useState(false)
     const [initialPosition, setInitialPosition] = useState(null);
+    const [clinica, setClinica] = useState(null);
     const [finalPosition, setFinalPosition] = useState({
         latitude: -23.2447,
         longitude: -46.666
     })
+
+    useEffect(() => {
+        BuscarClinica()
+    }, [route.params])
+
+    async function BuscarClinica() {
+        await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)
+            .then(response => {
+                setClinica(response.data)
+            }).catch(error => console.log(error))
+    }
+
 
     async function CapturarLocalizacao() {
         const { granted } = await requestForegroundPermissionsAsync();
@@ -35,7 +47,6 @@ export function Local({ navigation }) {
         if (granted) {
             const currentPosition = await getCurrentPositionAsync()
             setInitialPosition(currentPosition)
-            console.log(initialPosition)
         }
     }
 
@@ -76,81 +87,83 @@ export function Local({ navigation }) {
     }, [initialPosition])
 
     return (
-        <>
-            {
-                initialPosition != null ?
-                    (
-                        <Container>
-                            <MapView
-                                ref={mapReference}
-                                initialRegion={{
-                                    latitude: initialPosition.coords.latitude,
-                                    longitude: initialPosition.coords.longitude,
-                                    latitudeDelta: 0.005,
-                                    longitudeDelta: 0.005
-                                }}
-                                provider={PROVIDER_GOOGLE}
-                                style={styles.map}
-                                customMapStyle={grayMapStyle} >
-                                <MapViewDirections
-                                    origin={initialPosition.coords}
-                                    destination={{
-                                        latitude: finalPosition.latitude,
-                                        longitude: finalPosition.longitude,
+        clinica ?
+            <ActivityIndicator /> :
+            <>
+                {
+                    initialPosition != null ?
+                        (
+                            <Container>
+                                <MapView
+                                    ref={mapReference}
+                                    initialRegion={{
+                                        latitude: initialPosition.coords.latitude,
+                                        longitude: initialPosition.coords.longitude,
                                         latitudeDelta: 0.005,
                                         longitudeDelta: 0.005
                                     }}
-                                    strokeWidth={10}
-                                    strokeColor='#496BBA'
+                                    provider={PROVIDER_GOOGLE}
+                                    style={styles.map}
+                                    customMapStyle={grayMapStyle} >
+                                    <MapViewDirections
+                                        origin={initialPosition.coords}
+                                        destination={{
+                                            latitude: finalPosition.latitude,
+                                            longitude: finalPosition.longitude,
+                                            latitudeDelta: 0.005,
+                                            longitudeDelta: 0.005
+                                        }}
+                                        strokeWidth={10}
+                                        strokeColor='#496BBA'
 
-                                    apikey={mapskey} />
-                                <Marker
-                                    coordinate={{
-                                        latitude: initialPosition.coords.latitude,
-                                        longitude: initialPosition.coords.longitude,
-                                    }}
-                                    title='Exemplo de local'
-                                    description='Qualquer lugar no meu mapa' />
-                                <Marker
-                                    pinColor="blue"
-                                    coordinate={{
-                                        latitude: finalPosition.latitude,
-                                        longitude: finalPosition.longitude,
-                                    }}
-                                    title='Exemplo de local'
-                                    description='Qualquer lugar no meu mapa' />
-                            </MapView>
-                            <Title>Clínica Natureh</Title>
-                            <Text>São Paulo, SP</Text>
-                            <Text fieldWidth="90%" textAlign="start" >Endereço</Text>
-                            <InfoInput />
-                            <View style={{ width: "90%", flexDirection: "row", gap: 32, marginTop: 20 }}>
-                                <View style={{ flex: 1 }}>
-                                    <Text textAlign="start" fieldWidth="100%">Número</Text>
-                                    <InfoInput fieldWidth="100%*" />
+                                        apikey={mapskey} />
+                                    <Marker
+                                        coordinate={{
+                                            latitude: initialPosition.coords.latitude,
+                                            longitude: initialPosition.coords.longitude,
+                                        }}
+                                        title='Exemplo de local'
+                                        description='Qualquer lugar no meu mapa' />
+                                    <Marker
+                                        pinColor="blue"
+                                        coordinate={{
+                                            latitude: finalPosition.latitude,
+                                            longitude: finalPosition.longitude,
+                                        }}
+                                        title='Exemplo de local'
+                                        description='Qualquer lugar no meu mapa' />
+                                </MapView>
+                                <Title>Clínica Natureh</Title>
+                                <Text>São Paulo, SP</Text>
+                                <Text fieldWidth="90%" textAlign="start" >Endereço</Text>
+                                <InfoInput />
+                                <View style={{ width: "90%", flexDirection: "row", gap: 32, marginTop: 20 }}>
+                                    <View style={{ flex: 1 }}>
+                                        <Text textAlign="start" fieldWidth="100%">Número</Text>
+                                        <InfoInput fieldWidth="100%*" />
+                                    </View>
+                                    <View style={{ flex: 1 }}>
+                                        <Text textAlign="start" fieldWidth="100%">Bairro</Text>
+                                        <InfoInput fieldWidth="100%" />
+                                    </View>
                                 </View>
-                                <View style={{ flex: 1 }}>
-                                    <Text textAlign="start" fieldWidth="100%">Bairro</Text>
-                                    <InfoInput fieldWidth="100%" />
+                                <View style={{ marginTop: 40 }}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+                                        <DbLink>Cancelar</DbLink>
+                                    </TouchableOpacity>
                                 </View>
-                            </View>
-                            <View style={{ marginTop: 40 }}>
-                                <TouchableOpacity onPress={() => navigation.navigate('Main')}>
-                                    <DbLink>Cancelar</DbLink>
-                                </TouchableOpacity>
-                            </View>
-                        </Container >
-                    )
-                    :
-                    (
-                        <Container>
-                            <Text>Localização não encontrada</Text>
+                            </Container >
+                        )
+                        :
+                        (
+                            <Container>
+                                <Text>Localização não encontrada</Text>
 
-                            <ActivityIndicator />
-                        </Container>
-                    )
-            }
-        </>
+                                <ActivityIndicator />
+                            </Container>
+                        )
+                }
+            </>
     )
 }
 

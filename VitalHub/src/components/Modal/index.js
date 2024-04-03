@@ -141,7 +141,7 @@ export const DescModal = ({ data, show, onAction }) => {
 
     const Local = () => {
 
-        navigation.navigate('Local');
+        navigation.navigate('Local', { clinicaId: data.medicoClinica.clinicaId});
     }
     return (
         show &&
