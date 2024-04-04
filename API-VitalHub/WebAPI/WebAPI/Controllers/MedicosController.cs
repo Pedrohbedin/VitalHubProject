@@ -41,6 +41,12 @@ namespace WebAPI.Controllers
             return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
         }
 
+        [HttpGet("BuscarPorData")]
+        public IActionResult BuscarPorData(DateTime data, Guid id)
+        {
+            return Ok(_medicoRepository.BuscarPorData(data, id));
+        }
+
         [HttpPost]
         public IActionResult Post(MedicoViewModel medicoModel)
         {
