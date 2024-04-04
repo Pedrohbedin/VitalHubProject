@@ -6,7 +6,7 @@ import { GrayLink, LbLink } from "../../components/Link/style";
 import { Button, BorderedButton } from "../../components/Button/style";
 import { Icon } from "react-native-elements"
 import { Text } from "../../components/Text/style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AsyncStore from '@react-native-async-storage/async-storage';
 import api from "../../services/services";
 
@@ -14,6 +14,8 @@ export function Login({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const [isEmailValid, setIsEmailValid] = useState(true);
+    const [isSenhaValid, setIsSenhaValid] = useState(true);
 
     async function Logar() {
         await api.post('/Login', {
@@ -23,18 +25,50 @@ export function Login({ navigation }) {
             await AsyncStore.setItem("token", JSON.stringify(response.data))
             navigation.navigate("Main")
         }
-        ).catch((error) =>
-            console.log(error)
-        )
+        ).catch((error) => {
+            console.log(error);
+
+            if (error.response && error.response.status === 401) {
+
+                setIsEmailValid(false);
+                setIsSenhaValid(false);
+            }
+        })
     }
+    useEffect (() => {
+
+        setIsEmailValid(true)
+        setIsSenhaValid(true)
+        
+    }, [
+            email,
+            senha
+        ]);
+
+   
 
     return (
         <Container>
             <LogoVitalHub />
             <Title>Entrar ou criar conta</Title>
 
-            <Input inputMod="email" keyboardType="email-address" placeholder="Usuário ou E-mail" placeholderTextColor="#49B3BA" value={email} onChangeText={txt => setEmail(txt)} />
-            <Input placeholder="Senha" placeholderTextColor="#49B3BA" value={senha} onChangeText={txt => setSenha(txt)} secureTextEntry={true} />
+            <Input
+                inputMod="email"
+                keyboardType="email-address"
+                placeholder="Usuário ou E-mail"
+                placeholderTextColor="#49B3BA"
+                value={email}
+                onChangeText={txt => setEmail(txt)}
+                style={isEmailValid ? {} : { borderColor: 'red' }}
+            />
+            <Input
+                placeholder="Senha"
+                placeholderTextColor="#49B3BA"
+                value={senha}
+                onChangeText={txt => setSenha(txt)}
+                secureTextEntry={true}
+                style={isSenhaValid ? {} : { borderColor: 'red' }}
+            />
 
             <GrayLink
                 onPress={() => navigation.navigate('EsqueceuSenha')}>Esqueceu sua senha?</GrayLink>
