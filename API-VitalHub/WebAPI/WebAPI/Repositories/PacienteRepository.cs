@@ -61,6 +61,7 @@ namespace WebAPI.Repositories
                 .Include(x => x.Prioridade)
                 .Include(x => x.Paciente!.IdNavigation)
                 .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
+                .Include(x => x.MedicoClinica!.Medico!.Especialidade)
                 .Where(x  => x.PacienteId == idPaciente && x.DataConsulta == dataConsulta)
                 .ToList();
         }

@@ -30,7 +30,7 @@ Notifications.setNotificationHandler({
     })
 })
 
-export function Home(navigation) {
+export function Home({ navigation }) {
 
 
     const [statusLista, setStatusLista] = useState("Agendada");
@@ -52,7 +52,7 @@ export function Home(navigation) {
     }, [])
 
     async function Get() {
-        await api.get(`/${user?.role}s/BuscarPorData?data=${dataConsulta}&id=${user?.id}`).then((response) =>
+        await api.get(`/${user?.role}s/BuscarPorData?data=2024/03/20&id=${user?.id}`).then((response) =>
             setConsultasLista(response.data)
         ).catch(
             (error) => console.log(error)
@@ -96,7 +96,7 @@ export function Home(navigation) {
             //     <ActivityIndicator animating={true} />
             //     :
             <>
-                <ProntuarioModal data={consultasLista} show3={modalProntuario} onAction={() => setModalProntuario(false)} />
+                <ProntuarioModal data={selected} show={modalProntuario} onAction={() => setModalProntuario(false)} />
                 <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
                 <CancelModal show={modalCancelar} onAction={() => {
                     setModalCancelar(false)
@@ -137,7 +137,7 @@ export function Home(navigation) {
                                 data={item}
                                 onAction={
                                     () => {
-                                        setData(item)
+                                        setSelected(item)
                                         statusLista == "Agendada" ?
                                             setModalCancelar(true)
                                             :

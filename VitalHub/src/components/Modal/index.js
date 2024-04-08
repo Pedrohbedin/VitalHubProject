@@ -37,20 +37,19 @@ export const CancelModal = ({ show = false, onAction }) => {
 }
 
 export const ProntuarioModal = ({ show, data, onAction }) => {
-
     const navigation = useNavigation();
     const Inserir = () => {
         navigation.navigate("Prontuario")
     }
     return (
         show &&
-        <ModalBackground show={show}>
-            <ModalContent>
+        <ModalBackground show={show} marginTop="70px">
+            <ModalContent height="auto">
                 <PerfilImage border="10px" padding="30%" source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg' }} />
-                <Title margin="20px 0 0 0">{data.paciente}</Title>
+                <Title margin="20px 0 0 0">{data.paciente.idNavigation.nome}</Title>
                 <View style={{ flexDirection: "row", gap: 20 }}>
-                    <Text margin="20px 0px" fieldWidth="auto">{data.idade} anos</Text>
-                    <Text margin="20px 0px" fieldWidth="auto">{data.email}</Text>
+                    <Text margin="20px 0px" fieldWidth="auto">17 anos</Text>
+                    <Text margin="20px 0px" fieldWidth="auto">{data.paciente.idNavigation.email}</Text>
                 </View>
                 <Button padding="0px 0px" onPress={Inserir}>
                     <ButtonTitle colorText="#FFFFFF">Inserir Prontuário</ButtonTitle>
@@ -138,20 +137,20 @@ export const AgendarModal = ({ show, onConfirm, onCancel }) => {
 
 export const DescModal = ({ data, show, onAction }) => {
     const navigation = useNavigation();
-
+    console.log(data)
     const Local = () => {
 
-        navigation.navigate('Local', { clinicaId: data.medicoClinica.clinicaId});
+        navigation.navigate('Local', { clinicaId: data.medicoClinica.clinicaId });
     }
     return (
         show &&
         <ModalBackground show={show} >
             <ModalContent fieldWidth="95%" height="auto" justify="center">
                 <PerfilImage border="10px" padding="30%" source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg' }} />
-                <Title>{data.nome}</Title>
+                <Title>{data.medicoClinica.medico.idNavigation.nome}</Title>
                 <SpacedContainer fieldWidth="70%">
-                    <Text fieldWidth="auto">Cliníco geral</Text>
-                    <Text fieldWidth="auto">CRM-15286</Text>
+                    <Text fieldWidth="auto">{data.medicoClinica.medico.especialidade.especialidade1}</Text>
+                    <Text fieldWidth="auto">{data.medicoClinica.medico.crm}</Text>
                 </SpacedContainer>
                 <Button onPress={Local}>
                     <ButtonTitle colorText="#FFFFFF">

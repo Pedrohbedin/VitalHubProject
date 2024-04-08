@@ -26,7 +26,7 @@ export const Card = ({
                         <View style={{ gap: 7, alignItems: "left", padding: 0, flexDirection: "column" }}>
                             <Title fieldWidth="100%" textAlign="left" margin="0">{role == "Medico" ? data.paciente.idNavigation.nome : data.medicoClinica.medico.idNavigation.nome}</Title>
                             <View style={{ flexDirection: 'row', gap: 15 }}>
-                                <Text margin="0px" fieldWidth="auto">17 anos</Text>
+                                <Text margin="0px" fieldWidth="auto">{role == "Paciente" ? data.medicoClinica.medico.crm : "17 anos"}</Text>
 
                                 <Text margin="0px" fieldWidth="auto">{data.prioridade.prioridade == 1 ? "Rotina" : data.prioridade.prioridade == 2 ? "Consulta" : "Urgência"}</Text>
                             </View>

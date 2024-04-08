@@ -8,6 +8,7 @@ export const ModalBackground = styled.View`
     justify-content: center;
     align-items: center;
     z-index: 1;
+    margin-top: ${(props) => props.marginTop || "auto"};
 `
 
 export const ModalContent = styled.View`

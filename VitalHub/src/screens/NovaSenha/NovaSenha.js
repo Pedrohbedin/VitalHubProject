@@ -5,8 +5,13 @@ import { LogoVitalHub } from "../../components/Logo"
 import { Input } from "../../components/Input/style"
 import { ButtonTitle, Title } from "../../components/Title/style"
 import { Text } from "../../components/Text/style"
+import { useState } from "react"
 
 export function NovaSenha({ navigation }) {
+
+    const [password, setPassword] = useState();
+    const [confirmPassword, setConfirmPassword] = useState();
+
     return (
         <Container>
             <FuncButton onPress={() => navigation.navigate("Login")}>
@@ -23,8 +28,8 @@ export function NovaSenha({ navigation }) {
             <Title>Redefinir senha</Title>
             <Text>Insira e confirme a sua nova senha</Text>
 
-            <Input placeholder="Nova Senha" placeholderTextColor="#34898F" />
-            <Input placeholder="Confirmar nova senha" placeholderTextColor="#34898F" />
+            <Input placeholder="Nova Senha" placeholderTextColor="#34898F" onChangeText={txt => setPassword(txt)} value={password} />
+            <Input placeholder="Confirmar nova senha" placeholderTextColor="#34898F" onChangeText={txt => setConfirmPassword(txt)} value={confirmPassword} />
 
             <Button onPress={() => navigation.navigate('Login')}>
                 <ButtonTitle colorText="#FFFFFF">Confirmar senha nova</ButtonTitle>
