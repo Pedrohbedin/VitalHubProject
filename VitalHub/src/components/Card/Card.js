@@ -64,18 +64,18 @@ export function CardClinica({ data, borderColor, onPress }) {
                 marginHorizontal: 20
             }} flexDirection="row">
                 <View style={{ flex: 1, justifyContent: "flex-start" }}>
-                    <Title textAlign="left">{data.nome}</Title>
-                    <Text textAlign="left">{data.local}</Text>
+                    <Title textAlign="left">{data.nomeFantasia}</Title>
+                    <Text textAlign="left">{data.endereco.cidade}</Text>
                 </View>
                 <View>
                     <Text fieldWidth="auto" textAlign="right" fontFamily="Quicksand_600SemiBold" colorText="#F9A620">
                         <Icon size={14} name='star' type='antdesign'
                             color={"#F9A620"}
-                        /> {data.nota}</Text>
+                        /> 3,6</Text>
                     <Text borderRadius="5px" padding="5px" fieldWidth="auto" backgroundColor="#E8FCFD" colorText="#49B3BA" fontFamily="Quicksand_600SemiBold">
                         <Icon size={14} name='calendar' type='antdesign'
                             color={"#49B3BA"}
-                        /> {data.dias}</Text>
+                        /> Seg - Sex</Text>
                 </View>
             </CardContainer >
         </TouchableWithoutFeedback>

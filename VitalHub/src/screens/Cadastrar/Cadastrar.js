@@ -21,7 +21,7 @@ export function Cadastrar({ navigation }) {
             <Input placeholder="Senha" placeholderTextColor="#49B3BA" />
             <Input placeholder="Confirmar Senha" placeholderTextColor="#49B3BA" />
 
-            <Button onPress={() => navigation.navigate("CodigoEmail")}>
+            <Button onPress={() => navigation.navigate("Login")}>
                 <ButtonTitle>Cadastrar</ButtonTitle>
             </Button>
 

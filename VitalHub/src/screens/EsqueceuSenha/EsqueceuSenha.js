@@ -7,6 +7,9 @@ import { Icon } from "react-native-elements";
 import { Text } from "../../components/Text/style";
 
 export function EsqueceuSenha({ navigation }) {
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [confirmPassword, setConfirmPassword] = useState()
     return (
         <Container>
             <FuncButton onPress={() => navigation.navigate('Login')}>
@@ -20,7 +23,7 @@ export function EsqueceuSenha({ navigation }) {
             <LogoVitalHub />
             <Title>Recuperar senha</Title>
             <Text>Digite abaixo seu email cadastrado que enviaremos um link para recuperação de senha</Text>
-            <Input placeholder="Usuário ou E-mail" placeholderTextColor="#49B3BA" />
+            <Input placeholder="Usuário ou E-mail" placeholderTextColor="#49B3BA" value={email} onChangeText={txt => setSenha(txt)}/>
             <Button onPress={() => navigation.navigate('NovaSenha')}>
                 <ButtonTitle>Continuar</ButtonTitle>
             </Button>

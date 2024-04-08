@@ -52,7 +52,7 @@ export function Home(navigation) {
     }, [])
 
     async function Get() {
-        await api.get(`/${user?.role}s/BuscarPorData?data=2024-03-20&id=${user.id}`).then((response) =>
+        await api.get(`/${user?.role}s/BuscarPorData?data=${dataConsulta}&id=${user?.id}`).then((response) =>
             setConsultasLista(response.data)
         ).catch(
             (error) => console.log(error)
@@ -150,7 +150,7 @@ export function Home(navigation) {
                             />)
 
                         }
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item?.id}
                         showsVerticalScrollIndicator={false}
                     />
                     <Navegator tipoConta={user?.role} onAction={() => setModalConsulta(!modalConsulta)} visible={!modalConsulta} />

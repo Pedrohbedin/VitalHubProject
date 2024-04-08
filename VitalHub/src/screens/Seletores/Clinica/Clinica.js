@@ -6,10 +6,14 @@ import { Button } from "../../../components/Button/style";
 import { DbLink } from "../../../components/Link/style";
 import { TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { useEffect } from "react";
+import api from "../../../services/services";
+
 
 export function Clinica({ navigation }) {
 
     const [clinicaLista, setClinicaLista] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
         Get()
