@@ -25,10 +25,6 @@ export function Local({ navigation, route }) {
     const mapReference = useRef()
     const [initialPosition, setInitialPosition] = useState(null);
     const [clinica, setClinica] = useState();
-    const [finalPosition, setFinalPosition] = useState({
-        latitude: -23.2447,
-        longitude: -46.666
-    })
 
     async function BuscarClinica() {
         await api.get(`/Clinica/BuscarPorId?id=${route.params.clinicaId}`)

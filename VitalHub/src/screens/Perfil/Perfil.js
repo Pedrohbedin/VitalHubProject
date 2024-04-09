@@ -38,93 +38,135 @@ export function Perfil({ navigation }) {
             console.log(error);
         }
     };
-
     return (
         user === null || userData === null ?
             <ActivityIndicator />
             :
-            <ScrollView>
-                <Container>
-                    <PerfilImage source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtLjcoLe9I_D5EcQ_2QHPDrx7PxSK4bC5chSDZKvU4g&s', }} />
+            user.role === "Paciente" ?
+                <ScrollView>
+                    <Container>
+                        <PerfilImage source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtLjcoLe9I_D5EcQ_2QHPDrx7PxSK4bC5chSDZKvU4g&s', }} />
 
-                    <PerfilForm>
-                        <Title>{user.name}</Title>
-                        <Text>{user.email}</Text>
-                    </PerfilForm>
+                        <PerfilForm>
+                            <Title>{user.name}</Title>
+                            <Text>{user.email}</Text>
+                        </PerfilForm>
 
-                    <MiddleTitle textAlign="left">Data de nascimento</MiddleTitle>
+                        <MiddleTitle textAlign="left">Data de nascimento</MiddleTitle>
 
-                    <InfoInput
-                        value={moment(userData.dataNascimento).format("DD/MM/YYYY")}
-                        editable={false}
-                        style={[
-                            editable && { borderColor: '#49B3BA', borderWidth: 1 },
-                            editable && { color: '#49B3BA' }
-                        ]}
-                    />
+                        <InfoInput
+                            value={moment(userData.dataNascimento).format("DD/MM/YYYY")}
+                            editable={editable}
+                            style={[
+                                editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                editable && { color: '#49B3BA' }
+                            ]}
+                        />
 
-                    <MiddleTitle textAlign="left">CPF</MiddleTitle>
+                        <MiddleTitle textAlign="left">CPF</MiddleTitle>
 
-                    <InfoInput
-                        value={userData.cpf}
-                        editable={false}
-                        keyboardType="numeric"
-                        style={[
-                            editable && { borderColor: '#49B3BA', borderWidth: 1 },
-                            editable && { color: '#49B3BA' }
-                        ]}
-                    />
+                        <InfoInput
+                            value={userData.cpf}
+                            editable={editable}
+                            keyboardType="numeric"
+                            style={[
+                                editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                editable && { color: '#49B3BA' }
+                            ]}
+                        />
 
-                    <MiddleTitle textAlign="left">Endereço</MiddleTitle>
+                        <MiddleTitle textAlign="left">Endereço</MiddleTitle>
 
-                    <InfoInput
-                        value={userData.endereco.logradouro}
-                        editable={false}
-                        style={[
-                            editable && { borderColor: '#49B3BA', borderWidth: 1 },
-                            editable && { color: '#49B3BA' }
-                        ]}
-                    />
+                        <InfoInput
+                            value={userData.endereco.logradouro}
+                            editable={editable}
+                            style={[
+                                editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                editable && { color: '#49B3BA' }
+                            ]}
+                        />
 
-                    <SpacedContainer>
-                        <Container>
+                        <SpacedContainer>
+                            <Container>
 
-                            <MiddleTitle textAlign="left">Cep</MiddleTitle>
-                            <LittleInfoInput
-                                value={userData.endereco.cep}
-                                editable={false}
-                                keyboardType="numeric"
-                                style={[
-                                    editable && { borderColor: '#49B3BA', borderWidth: 1 },
-                                    editable && { color: '#49B3BA' }
-                                ]}
-                            />
+                                <MiddleTitle textAlign="left">Cep</MiddleTitle>
+                                <LittleInfoInput
+                                    value={userData.endereco.cep}
+                                    editable={editable}
+                                    keyboardType="numeric"
+                                    style={[
+                                        editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                        editable && { color: '#49B3BA' }
+                                    ]}
+                                />
 
-                        </Container>
-                        <Container>
+                            </Container>
+                            <Container>
 
-                            <MiddleTitle textAlign="left">Cidade</MiddleTitle>
-                            <LittleInfoInput
-                                value={userData.endereco.cidade}
-                                editable={false}
-                                style={[
-                                    editable && { borderColor: '#49B3BA', borderWidth: 1 },
-                                    editable && { color: '#49B3BA' }
-                                ]}
-                            />
+                                <MiddleTitle textAlign="left">Cidade</MiddleTitle>
+                                <LittleInfoInput
+                                    value={userData.endereco.cidade}
+                                    editable={editable}
+                                    style={[
+                                        editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                        editable && { color: '#49B3BA' }
+                                    ]}
+                                />
 
-                        </Container>
-                    </SpacedContainer>
+                            </Container>
+                        </SpacedContainer>
 
-                    <Button onPress={() => setEditable(false)}>
-                        <ButtonTitle colorText="#FFFFFF">Salvar</ButtonTitle>
-                    </Button>
+                        <Button onPress={() => setEditable(false)}>
+                            <ButtonTitle colorText="#FFFFFF">Salvar</ButtonTitle>
+                        </Button>
 
-                    <Button onPress={() => setEditable(!editable)}>
-                        <ButtonTitle colorText="#FFFFFF">Editar</ButtonTitle>
-                    </Button>
+                        <Button onPress={() => setEditable(true)}>
+                            <ButtonTitle colorText="#FFFFFF">Editar</ButtonTitle>
+                        </Button>
 
-                </Container>
-            </ScrollView>
+                    </Container>
+                </ScrollView>
+                :
+                <ScrollView>
+                    <Container>
+                        <PerfilImage source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtLjcoLe9I_D5EcQ_2QHPDrx7PxSK4bC5chSDZKvU4g&s', }} />
+
+                        <PerfilForm>
+                            <Title>{user.name}</Title>
+                            <Text>{user.email}</Text>
+                        </PerfilForm>
+
+                        <MiddleTitle textAlign="left">Especialidade</MiddleTitle>
+
+                        <InfoInput
+                            value={userData.especialidade.especialidade1}
+                            editable={editable}
+                            style={[
+                                editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                editable && { color: '#49B3BA' }
+                            ]}
+                        />
+
+                        <MiddleTitle textAlign="left">CRM</MiddleTitle>
+
+                        <InfoInput
+                            value={userData.crm}
+                            editable={editable}
+                            style={[
+                                editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                editable && { color: '#49B3BA' }
+                            ]}
+                        />
+
+                        <Button onPress={() => setEditable(false)}>
+                            <ButtonTitle colorText="#FFFFFF">Salvar</ButtonTitle>
+                        </Button>
+
+                        <Button onPress={() => setEditable(true)}>
+                            <ButtonTitle colorText="#FFFFFF">Editar</ButtonTitle>
+                        </Button>
+
+                    </Container>
+                </ScrollView>
     );
 }

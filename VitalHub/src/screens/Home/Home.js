@@ -92,9 +92,6 @@ export function Home({ navigation }) {
         user == null ?
             <ActivityIndicator animating={true} />
             :
-            // consultasLista == null ?
-            //     <ActivityIndicator animating={true} />
-            //     :
             <>
                 <ProntuarioModal data={selected} show={modalProntuario} onAction={() => setModalProntuario(false)} />
                 <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
@@ -141,7 +138,7 @@ export function Home({ navigation }) {
                                         statusLista == "Agendada" ?
                                             setModalCancelar(true)
                                             :
-                                            user?.role == "Medico" ? setModalProntuario(true) : navigation.navigate("Prescricao")
+                                            user?.role == "Medico" ? item.descricao != null ? navigation.navigate("Prontuario", {data: item}) : setModalProntuario(true) : navigation.navigate("Prescricao", {data: item})
                                     }}
                                 onClick={() => {
                                     user?.role == "Paciente" ? Precionado(item) : ""

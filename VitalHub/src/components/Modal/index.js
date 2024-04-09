@@ -39,7 +39,7 @@ export const CancelModal = ({ show = false, onAction }) => {
 export const ProntuarioModal = ({ show, data, onAction }) => {
     const navigation = useNavigation();
     const Inserir = () => {
-        navigation.navigate("Prontuario")
+        navigation.navigate("Prontuario", { data: data })
     }
     return (
         show &&
