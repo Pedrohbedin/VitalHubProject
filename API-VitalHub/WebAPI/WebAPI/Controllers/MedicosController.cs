@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public IActionResult Post([FromForm] MedicoViewModel medicoModel)
+        public async Task<IActionResult> PostAsync([FromForm] MedicoViewModel medicoModel)
         {
             Usuario user = new Usuario();
             user.Nome = medicoModel.Nome;
@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
 
             var connectionString = "DefaultEndpointsProtocol=https;AccountName=vitalhubg04t;AccountKey=BQheSOFQGwYfUEfN1S1zsrIBJWuGnDwwCdHRGneA1HhGS3lfnVPLW5ccuv2m/QIQg7c2dQtqWR3Z+ASt42s3fg==;EndpointSuffix=core.windows.net";
 
-            user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo, connectionString, containerName);
+            user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(medicoModel.Arquivo, connectionString, containerName);
 
             user.Senha = medicoModel.Senha;
 
@@ -78,6 +78,8 @@ namespace WebAPI.Controllers
             user.Medico.Endereco.Cep = medicoModel.Cep;
 
             _medicoRepository.Cadastrar(user);
+
+            await _emailSendingService.SendWelcomeEmail(user.Email!, user.Nome!);
 
             return Ok();
         }
