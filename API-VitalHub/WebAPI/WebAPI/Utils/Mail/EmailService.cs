@@ -53,7 +53,7 @@ namespace WebAPI.Utils.Mail
                     await smtp.SendAsync(email);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception) 
             {
                 throw;
             }
