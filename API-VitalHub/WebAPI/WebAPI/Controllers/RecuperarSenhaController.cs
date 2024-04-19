@@ -51,7 +51,8 @@ namespace WebAPI.Controllers
                 throw;
             }
         }
-        [HttpPost]
+
+        [HttpPost("EnivarCodigoRecuperacao")]
 
         public async Task<ActionResult> TryRecoveryCode(string email, int code)
         {
