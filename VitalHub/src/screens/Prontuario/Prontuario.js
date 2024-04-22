@@ -23,6 +23,8 @@ export function Prontuario({ navigation, route }) {
     async function Salvar() {
         await api.put('/Consultas/Prontuario', consultaAtualizada).then(response => console.log(response))
             .catch(error => console.log(error))
+
+        console.log(consultaAtualizada)
         setEditable(false)
     }
 

@@ -5,12 +5,30 @@ import { LogoVitalHub } from "../../components/Logo"
 import { Input } from "../../components/Input/style"
 import { ButtonTitle, Title } from "../../components/Title/style"
 import { Text } from "../../components/Text/style"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import api from "../../services/services"
 
-export function NovaSenha({ navigation }) {
+export function NovaSenha({ navigation, route }) {
 
-    const [password, setPassword] = useState();
-    const [confirmPassword, setConfirmPassword] = useState();
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState();
+
+    useEffect(() => {
+        setEmail(route.params.email)
+    }, [route.params])
+
+
+    const RedefinirSenha = async () => {
+        if (password == confirmPassword) {
+            await api.put(`/Usuario/AlterarSenha?email=${email}`, {
+                senhaNova: password
+            }).then(navigation.navigate("Login"));
+        }
+        else {
+            console.error('As senhas não coincidem');
+        }
+    }
 
     return (
         <Container>
@@ -28,10 +46,10 @@ export function NovaSenha({ navigation }) {
             <Title>Redefinir senha</Title>
             <Text>Insira e confirme a sua nova senha</Text>
 
-            <Input placeholder="Nova Senha" placeholderTextColor="#34898F" onChangeText={txt => setPassword(txt)} value={password} />
-            <Input placeholder="Confirmar nova senha" placeholderTextColor="#34898F" onChangeText={txt => setConfirmPassword(txt)} value={confirmPassword} />
+            <Input secureTextEntry={true} placeholder="Nova Senha" placeholderTextColor="#34898F" onChangeText={txt => setPassword(txt)} value={password} />
+            <Input secureTextEntry={true} placeholder="Confirmar nova senha" placeholderTextColor="#34898F" onChangeText={txt => setConfirmPassword(txt)} value={confirmPassword} />
 
-            <Button onPress={() => navigation.navigate('Login')}>
+            <Button onPress={RedefinirSenha}>
                 <ButtonTitle colorText="#FFFFFF">Confirmar senha nova</ButtonTitle>
             </Button>
         </Container>

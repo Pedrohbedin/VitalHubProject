@@ -6,9 +6,31 @@ import { ButtonTitle, Title } from "../../components/Title/style"
 import { Text } from "../../components/Text/style"
 import { CodeInput } from "../../components/Input/style"
 import { DbLink } from "../../components/Link/style"
+import { useEffect, useState } from "react"
+import api from "../../services/services"
 
-export function CodigoEmail({ navigation }) {
+export function CodigoEmail({ navigation, route }) {
+    const [codeFirst, setCodeFirst] = useState("");
+    const [codeSecond, setCodeSecond] = useState("");
+    const [codeThird, setCodeThird] = useState("");
+    const [codeFourth, setCodeFourth] = useState("");
 
+    const [email, setEmail] = useState();
+
+    useEffect(() => {
+        setEmail(route.params.email)
+    }, [route.params])
+
+    const Entrar = async () => {
+        // console.log(codeFirst + codeSecond + codeThird + codeFourth)
+        await api.post(`/RecuperarSenha/EnivarCodigoRecuperacao?email=${email}&code=${codeFirst + codeSecond + codeThird + codeFourth}`).then((response) => response.data == "Código correto" && navigation.navigate('NovaSenha', { email: email }))
+            .catch((error) => console.log(error))
+
+    }
+
+
+
+    // async function 
     return (
         <Container>
             <FuncButton onPress={() => navigation.navigate('Login')}>
@@ -22,14 +44,14 @@ export function CodigoEmail({ navigation }) {
             <LogoVitalHub />
             <Title>Verifique seu e-mail</Title>
             <Text>Digite o código de 4 dígitos enviado para
-                <DbLink>username@email.com</DbLink></Text>
+                <DbLink> {email}</DbLink></Text>
             <SpacedContainer>
-                <CodeInput maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
-                <CodeInput maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
-                <CodeInput maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
-                <CodeInput maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
+                <CodeInput onChangeText={(txt) => setCodeFirst(txt)} maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
+                <CodeInput onChangeText={(txt) => setCodeSecond(txt)} maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
+                <CodeInput onChangeText={(txt) => setCodeThird(txt)} maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
+                <CodeInput onChangeText={(txt) => setCodeFourth(txt)} maxLength={1} placeholder="0" placeholderTextColor="#34898F" />
             </SpacedContainer>
-            <Button onPress={() => navigation.navigate('Main')}>
+            <Button onPress={Entrar}>
                 <ButtonTitle>Entrar</ButtonTitle>
             </Button>
             <DbLink>Reenviar Código</DbLink>

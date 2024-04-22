@@ -97,6 +97,8 @@ export function Home({ navigation }) {
                 <ConsultaModal show={modalConsulta} onAction={() => setModalConsulta(false)} />
                 <CancelModal show={modalCancelar} onAction={() => {
                     setModalCancelar(false)
+                    api.put(`/Consultas/Status?idConsulta=${selected.id}&status=Cancelada`)
+                    Get()
                     handleCallNotifications()
                 }} />
                 <DescModal data={selected} show={modalDesc} onAction={() => setModalDesc(false)} />
@@ -138,11 +140,11 @@ export function Home({ navigation }) {
                                         statusLista == "Agendada" ?
                                             setModalCancelar(true)
                                             :
-                                            user?.role == "Medico" ? item.descricao != null ? navigation.navigate("Prontuario", {data: item}) : setModalProntuario(true) : navigation.navigate("Prescricao", {data: item})
+                                            user?.role == "Medico" ? item.descricao != null ? navigation.navigate("Prontuario", { data: item }) : setModalProntuario(true) : navigation.navigate("Prescricao", { data: item })
                                     }}
                                 onClick={() => {
                                     user?.role == "Paciente" ? Precionado(item) : ""
-                                    // statusLista == "Agendada" ? user?.role == "Paciente" ? setModalDesc(true) : "" : null
+                                    statusLista == "Agendada" ? user?.role == "Paciente" ? setModalDesc(true) : "" : null
                                 }}
                             />)
 

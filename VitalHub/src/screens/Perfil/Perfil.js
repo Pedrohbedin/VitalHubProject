@@ -17,6 +17,11 @@ export function Perfil({ navigation }) {
     const [userData, setUserData] = useState(null);
     const [editable, setEditable] = useState(false);
 
+    const [dataNascimento, setDataNascimento] = useState(null)
+    const [cpf, setCpf] = useState(null)
+    const [logradouro, setLogradouro] = useState(null)
+    const [cep, setCep] = useState(null)
+    const [cidade, setCidade] = useState(null)
 
     async function profileLoad() {
         setUser(await userDecodeToken());
@@ -30,17 +35,48 @@ export function Perfil({ navigation }) {
         fetchData()
     }, [user])
 
+    useEffect(() => {
+
+    })
+
     async function fetchData() {
         try {
             const response = await api.get(`/${user?.role}s/BuscarPorId?id=${user?.id}`);
             setUserData(response.data);
+            setDataNascimento(moment(response.data.dataNascimento).format("DD/MM/YYYY"))
+            setCpf(response.data.cpf)
+            setLogradouro(response.data.endereco.logradouro)
+            setCep(response.data.endereco.cep)
+            setCidade(response.data.endereco.cidade)
         } catch (error) {
             console.log(error);
         }
     };
+
+    const Salvar = () => {
+        setEditable(false)
+
+        userData.dataNascimento = dataNascimento;
+        userData.cpf = cpf;
+        userData.endereco.logradouro = logradouro;
+        userData.endereco.cep = cep;
+        userData.endereco.cidade = cidade;
+
+        const dateParts = dataNascimento.split("/");
+        const dateObject = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+        const isoDateString = dateObject.toISOString().split("T")[0];
+
+        api.put(`/Pacientes?idUsuario=${user.id}`, {
+            cpf: userData.cpf,
+            dataNascimento: isoDateString,
+            cep: userData.endereco.cep,
+            logradouro: userData.endereco.logradouro,
+            cidade: userData.endereco.cidade
+        }).then((response) => console.log(response.data)).catch((error) => console.log(error))
+    }
     return (
-        user === null || userData === null ?
-            <ActivityIndicator />
+        user === null || userData === null || dataNascimento === null ?
+            < ActivityIndicator />
             :
             user.role === "Paciente" ?
                 <ScrollView>
@@ -55,35 +91,40 @@ export function Perfil({ navigation }) {
                         <MiddleTitle textAlign="left">Data de nascimento</MiddleTitle>
 
                         <InfoInput
-                            value={moment(userData.dataNascimento).format("DD/MM/YYYY")}
+                            value={dataNascimento}
                             editable={editable}
                             style={[
                                 editable && { borderColor: '#49B3BA', borderWidth: 1 },
                                 editable && { color: '#49B3BA' }
                             ]}
+                            onChangeText={(txt) => setDataNascimento(txt)}
                         />
 
                         <MiddleTitle textAlign="left">CPF</MiddleTitle>
 
                         <InfoInput
-                            value={userData.cpf}
+                            value={cpf}
                             editable={editable}
                             keyboardType="numeric"
                             style={[
                                 editable && { borderColor: '#49B3BA', borderWidth: 1 },
                                 editable && { color: '#49B3BA' }
                             ]}
+                            onChangeText={(txt) => setCpf(txt)}
+
                         />
 
                         <MiddleTitle textAlign="left">Endereço</MiddleTitle>
 
                         <InfoInput
-                            value={userData.endereco.logradouro}
+                            value={logradouro}
                             editable={editable}
                             style={[
                                 editable && { borderColor: '#49B3BA', borderWidth: 1 },
                                 editable && { color: '#49B3BA' }
                             ]}
+                            onChangeText={(txt) => setLogradouro(txt)}
+
                         />
 
                         <SpacedContainer>
@@ -91,13 +132,14 @@ export function Perfil({ navigation }) {
 
                                 <MiddleTitle textAlign="left">Cep</MiddleTitle>
                                 <LittleInfoInput
-                                    value={userData.endereco.cep}
+                                    value={cep}
                                     editable={editable}
                                     keyboardType="numeric"
                                     style={[
                                         editable && { borderColor: '#49B3BA', borderWidth: 1 },
                                         editable && { color: '#49B3BA' }
                                     ]}
+                                    onChangeText={(txt) => setCep(txt)}
                                 />
 
                             </Container>
@@ -105,18 +147,19 @@ export function Perfil({ navigation }) {
 
                                 <MiddleTitle textAlign="left">Cidade</MiddleTitle>
                                 <LittleInfoInput
-                                    value={userData.endereco.cidade}
+                                    value={cidade}
                                     editable={editable}
                                     style={[
                                         editable && { borderColor: '#49B3BA', borderWidth: 1 },
                                         editable && { color: '#49B3BA' }
                                     ]}
+                                    onChangeText={(txt) => setCidade(txt)}
                                 />
 
                             </Container>
                         </SpacedContainer>
 
-                        <Button onPress={() => setEditable(false)}>
+                        <Button onPress={Salvar}>
                             <ButtonTitle colorText="#FFFFFF">Salvar</ButtonTitle>
                         </Button>
 
