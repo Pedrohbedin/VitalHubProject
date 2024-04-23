@@ -26,7 +26,7 @@ export function NovaSenha({ navigation, route }) {
             }).then(navigation.navigate("Login"));
         }
         else {
-            console.error('As senhas não coincidem');
+            alert('Senhas incompativeis');
         }
     }
 

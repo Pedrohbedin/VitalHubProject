@@ -9,7 +9,7 @@ import { Icon } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 
-export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal }) {
+export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, getMediaLibrary = false, ...rest }) {
 
     /*
       1 - Quando salvar a foto e clicar na lixeira - remover a galeria
@@ -19,6 +19,8 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal }
     const [openModal, setOpenModal] = useState(false)
     const [photo, setPhoto] = useState(null)
     const [flashMode, setFlashMode] = useState(true)
+
+    const [lastPhoto, setLastPhoto] = useState(null)
 
     useEffect(() => {
         (async () => {
@@ -39,19 +41,25 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal }
         }
     }
 
+    async function GetLatestPhoto() {
+        const assets = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
+        if (assets.length > 0) {
+            setLastPhoto(assets[0].uri)
+        }
+    }
+
     function FlashPhoto() {
         setFlashMode(!flashMode)
         console.log(flashMode)
     }
 
     async function UploadPhoto() {
-        await MediaLibrary.createAssetAsync(photo)
-            .then(() => {
-                alert("Foto salva com sucesso")
-            }).catch(error => {
-                alert("Não foi possivel processar a foto")
-            })
-
+        await MediaLibrary.createAssetAsync(photo).then(() => {
+            alert("Foto salva com sucesso")
+        }).catch(error => {
+            alert("Não foi possivel processar a foto")
+        })
+        setUriCameraCapture(photo)
         setOpenModal(false)
     }
 
@@ -62,6 +70,8 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal }
 
         setOpenModal(false)
     }
+
+    // GetLatestPhoto()
 
     return (
         <Modal visible={visible} transparent>

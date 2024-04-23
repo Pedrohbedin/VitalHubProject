@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { ButtonTitle, MiddleTitle, Title } from "../../components/Title/style";
 import { Container, SpacedContainer } from "../../components/Container/Style";
 import { InfoInput, LittleInfoInput } from "../../components/Input/style";
-import { PerfilForm } from "../../components/Form/style";
+import { Button, ButtonCamera } from "../../components/Button/style";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PerfilImage } from "../../components/Image/style";
-import { ButtonTitle, MiddleTitle, Title } from "../../components/Title/style";
-import { Button } from "../../components/Button/style";
-import { Text } from "../../components/Text/style";
-import api from "../../services/services";
+import { PerfilForm } from "../../components/Form/style";
 import { userDecodeToken } from "../../../utils/Auth";
-import { ActivityIndicator } from "react-native";
+import { Text } from "../../components/Text/style";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
+import { CameraModal } from "../Camera/Camera";
+import { ScrollView } from "react-native";
+import api from "../../services/services";
 import moment from "moment";
 
 export function Perfil({ navigation }) {
@@ -22,6 +24,9 @@ export function Perfil({ navigation }) {
     const [logradouro, setLogradouro] = useState(null)
     const [cep, setCep] = useState(null)
     const [cidade, setCidade] = useState(null)
+
+    const [showCamera, setShowCamera] = useState(false);
+    const [uri, setUri] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtLjcoLe9I_D5EcQ_2QHPDrx7PxSK4bC5chSDZKvU4g&s');
 
     async function profileLoad() {
         setUser(await userDecodeToken());
@@ -36,8 +41,8 @@ export function Perfil({ navigation }) {
     }, [user])
 
     useEffect(() => {
-
-    })
+        console.log(uri);
+    }, [uri])
 
     async function fetchData() {
         try {
@@ -80,13 +85,22 @@ export function Perfil({ navigation }) {
             :
             user.role === "Paciente" ?
                 <ScrollView>
-                    <Container>
-                        <PerfilImage source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtLjcoLe9I_D5EcQ_2QHPDrx7PxSK4bC5chSDZKvU4g&s', }} />
+                    <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={setUri} />
+                    <Container paddingTop="0">
+                        <View style={{ width: "100%" }}>
+                            <PerfilImage source={{ uri: uri, }} />
+                            <ButtonCamera onPress={() => setShowCamera(true)}>
+                                <MaterialCommunityIcons
+                                    name="camera-plus"
+                                    size={20}
+                                    color={"#fbfbfb"} />
+                            </ButtonCamera>
+                        </View>
 
-                        <PerfilForm>
+                        <View style={{ marginTop: 30, marginBottom: 30 }}>
                             <Title>{user.name}</Title>
                             <Text>{user.email}</Text>
-                        </PerfilForm>
+                        </View>
 
                         <MiddleTitle textAlign="left">Data de nascimento</MiddleTitle>
 

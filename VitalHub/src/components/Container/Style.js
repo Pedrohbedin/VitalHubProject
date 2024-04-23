@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export const Container = styled.SafeAreaView`
-    padding-top: 72px;
+    padding-top: ${(props) => props.paddingTop || "72px"};
     flex: 1;
     align-items: center;
     background-color: #FAFAFA;
