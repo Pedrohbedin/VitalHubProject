@@ -25,4 +25,10 @@ export const ModalContent = styled.View`
     bottom: 0;
 `
 
+export const LastPhoto = styled.Image`
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+`
+
 

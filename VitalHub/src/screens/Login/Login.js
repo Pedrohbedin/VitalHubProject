@@ -19,8 +19,10 @@ export function Login({ navigation }) {
 
     async function Logar() {
         await api.post('/Login', {
-            email: email,
-            senha: senha
+            // email: email,
+            // senha: senha
+            email: "emanuel@gmail.com",
+            senha: "emanuel1234"
         }).then(async (response) => {
             await AsyncStore.setItem("token", JSON.stringify(response.data))
             navigation.navigate("Main")

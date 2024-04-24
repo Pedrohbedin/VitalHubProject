@@ -26,7 +26,7 @@ export function Perfil({ navigation }) {
     const [cidade, setCidade] = useState(null)
 
     const [showCamera, setShowCamera] = useState(false);
-    const [uri, setUri] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtLjcoLe9I_D5EcQ_2QHPDrx7PxSK4bC5chSDZKvU4g&s');
+    const [uri, setUri] = useState("");
 
     async function profileLoad() {
         setUser(await userDecodeToken());
@@ -39,10 +39,6 @@ export function Perfil({ navigation }) {
     useEffect(() => {
         fetchData()
     }, [user])
-
-    useEffect(() => {
-        console.log(uri);
-    }, [uri])
 
     async function fetchData() {
         try {
@@ -79,6 +75,36 @@ export function Perfil({ navigation }) {
             cidade: userData.endereco.cidade
         }).then((response) => console.log(response.data)).catch((error) => console.log(error))
     }
+
+    //Fução para alterar a imagem do usuario
+
+    async function AlterarFotoPerfil() {
+        const formData = new FormData();
+
+        formData.append("Arquivo", {
+            uri: uri,
+            name: `image.${uri.split(".")[1]}`,
+            type: `image/${uri.split(".")[1]}`
+        });
+
+        console.log(uri)
+
+        await api.put(`/Usuario/AlterarFotoPerfil?idUsuario=${user.id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(setUser({
+            ...user,
+            foto: uri
+        })).catch((error) => console.log(error))
+    }
+
+    useEffect(() => {
+        if (uri != null) {
+            AlterarFotoPerfil();
+        }
+    }, [uri])
+
     return (
         user === null || userData === null || dataNascimento === null ?
             < ActivityIndicator />
@@ -88,7 +114,7 @@ export function Perfil({ navigation }) {
                     <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={setUri} />
                     <Container paddingTop="0">
                         <View style={{ width: "100%" }}>
-                            <PerfilImage source={{ uri: uri, }} />
+                            <PerfilImage source={{ uri: user.foto, }} />
                             <ButtonCamera onPress={() => setShowCamera(true)}>
                                 <MaterialCommunityIcons
                                     name="camera-plus"

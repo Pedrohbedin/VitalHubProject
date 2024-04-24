@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import * as MediaLibrary from "expo-media-library"
 import { AntDesign } from '@expo/vector-icons';
+import { LastPhoto } from '../../components/Modal/style';
 import { Icon } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
-
+import * as ImagePicker from 'expo-image-picker'
 
 export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, getMediaLibrary = false, ...rest }) {
 
@@ -18,7 +19,7 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
     const [tipoCamera, setTipoCamera] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     const [photo, setPhoto] = useState(null)
-    const [flashMode, setFlashMode] = useState(true)
+    // const [flashMode, setFlashMode] = useState(true)
 
     const [lastPhoto, setLastPhoto] = useState(null)
 
@@ -42,23 +43,33 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
     }
 
     async function GetLatestPhoto() {
-        const assets = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
-        if (assets.length > 0) {
-            setLastPhoto(assets[0].uri)
+        const { assets } = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
+        setLastPhoto(assets[0].uri)
+    }
+
+    async function SelectImageGallery() {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1
+        })
+
+        if (!result.canceled) {
+            setUriCameraCapture(result.assets[0].uri)
+            setOpenModal(false)
         }
     }
 
-    function FlashPhoto() {
-        setFlashMode(!flashMode)
-        console.log(flashMode)
-    }
+    // function FlashPhoto() {
+    //     setFlashMode(!flashMode)
+    //     console.log(flashMode)
+    // }
 
     async function UploadPhoto() {
-        await MediaLibrary.createAssetAsync(photo).then(() => {
-            alert("Foto salva com sucesso")
-        }).catch(error => {
-            alert("Não foi possivel processar a foto")
-        })
+        // await MediaLibrary.createAssetAsync(photo).then(() => {
+        //     alert("Foto salva com sucesso")
+        // }).catch(error => {
+        //     alert("Não foi possivel processar a foto")
+        // })
         setUriCameraCapture(photo)
         setOpenModal(false)
     }
@@ -71,7 +82,9 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
         setOpenModal(false)
     }
 
-    // GetLatestPhoto()
+    useEffect(() => {
+        GetLatestPhoto()
+    })
 
     return (
         <Modal visible={visible} transparent>
@@ -82,7 +95,7 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
                         style={styles.camera}
                         ratio='16:9'
                         type={tipoCamera ? "back" : "front"}
-                        flashMode={flashMode ? "on" : "off"}
+                    // flashMode={flashMode ? "on" : "off"}
                     >
                         <TouchableOpacity style={{ margin: 40 }} onPress={() => setShowCameraModal(false)}>
                             <Icon
@@ -93,15 +106,17 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
                             />
                         </TouchableOpacity>
                         <View style={styles.viewFlip}></View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                            <TouchableOpacity style={styles.btnFlash} onPress={FlashPhoto}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', backgroundColor: 'rgba(0, 0, 0, .5)', alignItems: 'center' }}>
+                            {/* <TouchableOpacity style={styles.btnFlash} onPress={FlashPhoto}>
                                 <FontAwesome name="bolt" size={24} color={flashMode ? "yellow" : "#FFF"} />
+                            </TouchableOpacity> */}
+                            <TouchableOpacity onPress={SelectImageGallery}>
+                                {lastPhoto != null ? (<LastPhoto source={{ uri: lastPhoto }} />) : (<LastPhoto />)}
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={CapturePhoto} style={styles.btnCapture}>
-                                <FontAwesome name='camera' size={23} color="#fff" />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setTipoCamera(!tipoCamera)} style={styles.btnCapture}>
-                                <Ionicons name='camera-reverse' size={23} color="#fff" />
+                            <TouchableOpacity onPress={CapturePhoto} style={styles.btnCapture} />
+
+                            <TouchableOpacity onPress={() => setTipoCamera(!tipoCamera)} style={styles.btnReverse}>
+                                <Ionicons name='camera-reverse' size={30} color="#fff" />
                             </TouchableOpacity>
                         </View>
                     </Camera >
@@ -161,11 +176,7 @@ const styles = StyleSheet.create({
         color: "#fff",
         marginBottom: 20,
     },
-    btnCapture: {
-        padding: 20,
-        margin: 20,
-        borderRadius: 10,
-        backgroundColor: "#121212",
+    btnReverse: {
         justifyContent: "center",
         alignItems: "center"
     },
@@ -174,6 +185,15 @@ const styles = StyleSheet.create({
         margin: 20,
         borderRadius: 10,
         backgroundColor: "#121212",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    btnCapture: {
+        width: 75,
+        height: 75,
+        margin: 20,
+        borderRadius: 100,
+        backgroundColor: "#fbfbfb",
         justifyContent: "center",
         alignItems: "center"
     },
