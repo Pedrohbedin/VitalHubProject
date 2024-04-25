@@ -10,12 +10,13 @@ import { TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import api from "../../services/services";
 import { ActivityIndicator } from "react-native";
+import { CameraModal } from "../Camera/Camera";
 
 export function Prontuario({ navigation, route }) {
     const [descricao, setDescricao] = useState(null)
     const [diagnostico, setDiagnostico] = useState(null)
     const [prescricao, setPrescricao] = useState(null)
-    
+
     const [editable, setEditable] = useState(false);
 
     const [consultaAtualizada, setConsultaAtualizada] = useState([]);
@@ -45,6 +46,7 @@ export function Prontuario({ navigation, route }) {
     return (
         descricao === null ? <ActivityIndicator /> :
             <ScrollView>
+                <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={setUri} />
                 <Container>
                     <PerfilImage source={{ uri: 'https://media.istockphoto.com/id/1226551176/pt/foto/advertisement-concept-side-view-half-face-profile-with-copy-space-of-perfect-smiling-man.jpg?s=612x612&w=0&k=20&c=5Hf34eKWwSFbRKoWfX1GlgxZvjKvURk_Id0PERH2MmE=', }} />
                     <Title>{route.params.data.paciente.idNavigation.nome}</Title>

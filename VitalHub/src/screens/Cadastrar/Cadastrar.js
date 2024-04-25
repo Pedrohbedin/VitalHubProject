@@ -18,7 +18,6 @@ export function Cadastrar({ navigation }) {
             email: "pedro@gmail.com",
             senha: "pedro123",
             tipoUsuarioId: "9812766d-8439-4cf2-b6ef-f4d2686e9cc8",
-            foto: "string"
         }).then((response) => console.log(response)).catch((error) => console.log(error))
     }
 

@@ -14,7 +14,7 @@ export const Card = ({
     urlFotoPaciente = "https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg"
 }) => {
     return (
-        <TouchableWithoutFeedback onPress={() => onClick()}>
+        <TouchableWithoutFeedback onPress={() => onAction()}>
             <CardContainer
                 style={{
                     marginVertical: 20,

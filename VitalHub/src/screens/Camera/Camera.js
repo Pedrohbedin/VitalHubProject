@@ -133,7 +133,10 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
                         <TouchableOpacity style={styles.btnClear} onPress={ClearPhoto}>
                             <FontAwesome name="trash" size={24} color="black" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btnUpload} onPress={UploadPhoto}>
+                        <TouchableOpacity style={styles.btnUpload} onPress={() => {
+                            setShowCameraModal(false)
+                            UploadPhoto()
+                        }}>
                             <FontAwesome name="upload" size={24} color="black" />
                         </TouchableOpacity>
                     </View>
