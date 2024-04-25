@@ -14,6 +14,7 @@ import { ScrollView } from "react-native";
 import api from "../../services/services";
 import moment from "moment";
 
+
 export function Perfil({ navigation }) {
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null);
@@ -28,18 +29,20 @@ export function Perfil({ navigation }) {
     const [showCamera, setShowCamera] = useState(false);
     const [uri, setUri] = useState("");
 
-    async function profileLoad() {
-        setUser(await userDecodeToken());
-    }
-
+    
     useEffect(() => {
         profileLoad()
     }, [])
-
+    
     useEffect(() => {
         fetchData()
     }, [user])
 
+    async function profileLoad() {
+        setUser(await userDecodeToken());
+        fetchData(await userDecodeToken())
+    }
+    
     async function fetchData() {
         try {
             const response = await api.get(`/${user?.role}s/BuscarPorId?id=${user?.id}`);
@@ -67,7 +70,7 @@ export function Perfil({ navigation }) {
         const dateObject = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
         const isoDateString = dateObject.toISOString().split("T")[0];
 
-        api.put(`/Pacientes?idUsuario=${user.id}`, {
+        api.put(`/Pacientes?idUsuario=${user?.id}`, {
             cpf: userData.cpf,
             dataNascimento: isoDateString,
             cep: userData.endereco.cep,
@@ -89,7 +92,7 @@ export function Perfil({ navigation }) {
 
         console.log(uri)
 
-        await api.put(`/Usuario/AlterarFotoPerfil?idUsuario=${user.id}`, formData, {
+        await api.put(`/Usuario/AlterarFotoPerfil?idUsuario=${user?.id}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }

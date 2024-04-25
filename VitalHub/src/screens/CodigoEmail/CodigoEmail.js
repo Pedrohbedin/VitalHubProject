@@ -21,16 +21,12 @@ export function CodigoEmail({ navigation, route }) {
         setEmail(route.params.email)
     }, [route.params])
 
-    const Entrar = async () => {
-        // console.log(codeFirst + codeSecond + codeThird + codeFourth)
+    const Entrar = async () => {       
         await api.post(`/RecuperarSenha/EnivarCodigoRecuperacao?email=${email}&code=${codeFirst + codeSecond + codeThird + codeFourth}`).then((response) => response.data == "Código correto" && navigation.navigate('NovaSenha', { email: email }))
             .catch((error) => console.log(error))
 
     }
-
-
-
-    // async function 
+ 
     return (
         <Container>
             <FuncButton onPress={() => navigation.navigate('Login')}>

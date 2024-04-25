@@ -105,7 +105,7 @@ export function Home({ navigation }) {
                 <Header>
                     <SpacedContainer style={{ height: "100%" }} >
                         <View style={{ flexDirection: "row", gap: 10 }}>
-                            <HeaderImage source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg', }} />
+                            <HeaderImage source={{ uri: user.foto, }} />
                             <View style={{ width: "70%" }}>
                                 <Text fieldwidth="100%" margin="0" textAlign="left">Bem vindo</Text>
                                 <MiddleTitle textAlign="left" margin="0" colorText="#FFFFFF" fieldwidth="100%">{user?.role == "Paciente" ? "Pa. " : "Dr. "} {user.name}</MiddleTitle>
