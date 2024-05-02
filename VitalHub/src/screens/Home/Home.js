@@ -52,8 +52,8 @@ export function Home({ navigation }) {
     }, [])
 
     async function Get() {
-        await api.get(`/${user?.role}s/BuscarPorData?data=2024/03/20&id=${user?.id}`).then((response) =>
-            setConsultasLista(response.data)
+        await api.get(`/${user?.role}s/BuscarPorData?data=${dataConsulta}&id=${user?.id}`).then((response) =>
+            setConsultasLista(response.data),
         ).catch(
             (error) => console.log(error)
         )

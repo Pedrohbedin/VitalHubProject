@@ -5,28 +5,60 @@ import { ButtonTitle, Title } from "../../../components/Title/style";
 import CalendarComponent from "../../../components/Calender";
 import InputSelect from "../../../components/SelectInput/SelectInput";
 import { View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AgendarModal } from "../../../components/Modal";
 import { TouchableOpacity } from "react-native";
 
-export function DataPage({ navigation }) {
+export function DataPage({ navigation, route }) {
     const [modal, setModal] = useState(false)
+    const [agendamento, setAgendamento] = useState(null);
+    const [dataSelecionado, setDataSelecionado] = useState(null);
+    const [horaSelecionada, setHoraSelecionada] = useState(null);
+
+
+
+
+    function handleContinue() {
+        setAgendamento({
+            ...route.params.agendamento,
+            dataConsulta: `${dataSelecionado} ${horaSelecionada}`
+        })
+        setModal(true)
+    }
+
+    useEffect(() => {
+        console.log(agendamento)
+    }, [agendamento])
 
     return (
         <>
-            <AgendarModal show={modal} onCancel={() => {
-                setModal(false);
-            }} onConfirm={() => {
-                setModal(false)
-                navigation.navigate("Main")
-            }} />
+            <AgendarModal
+                show={modal}
+                agendamento={agendamento}
+                onCancel={() => {
+                    setModal(false);
+                }}
+                onConfirm={() => {
+                    setModal(false)
+                    navigation.navigate("Main")
+                }}
+            />
+
+
+
             <Container>
                 <Title>Selecionar data</Title>
                 <View style={{ height: 350 }}>
-                    <CalendarComponent />
+                    <CalendarComponent
+                        setDataSelecionada={setDataSelecionado}
+
+                    />
                 </View>
-                <InputSelect />
-                <Button onPress={() => setModal(true)}>
+                <InputSelect
+                    setHoraSelecionada={setHoraSelecionada}
+
+                />
+                <Button onPress={() => handleContinue()}>
                     <ButtonTitle colorText="#FFFFFF">Confirmar</ButtonTitle>
                 </Button>
                 <TouchableOpacity onPress={() => navigation.navigate('Medico')}>

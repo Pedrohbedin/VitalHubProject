@@ -6,7 +6,7 @@ import moment from "moment";
 import { StyledCalendarStrip } from "./style";
 
 
-const CalendarComponent = () => {
+const CalendarComponent = ({ setShowModalAgendamento, dataSelecionado, setDataSelecionada }) => {
   const [selected, setSelected] = useState("");
 
   const currentDate = new Date();
@@ -39,6 +39,9 @@ const CalendarComponent = () => {
         alignSelf: 'center',
         backgroundColor: '#FAFAFA'
       }}
+
+
+
       horizontal={true}
       // Enable paging on horizontal, default = false
       pagingEnabled={true}
@@ -46,8 +49,9 @@ const CalendarComponent = () => {
       calendarWidth={360}
       calendarHeight={350}
 
-      onDayPress={(day) => {
-        setSelected(day.dateString);
+      onDayPress={(data) => {
+        setSelected(data.dateString);
+        setDataSelecionada(data.dateString);
       }}
       markedDates={{
         [selected]: {

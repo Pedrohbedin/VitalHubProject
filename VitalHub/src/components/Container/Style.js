@@ -32,7 +32,7 @@ export const Header = styled(LinearGradient).attrs({
 
 export const CardContainer = styled.View`
     width: ${(props) => props.fieldWidth || "90%"};
-    elevation: 5;
+    //elevation: 5;
     background-color: #FFFFFF;
     border-radius: 5px;
     padding: 10px;

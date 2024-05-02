@@ -10,18 +10,30 @@ import { useEffect } from "react";
 import api from "../../../services/services";
 
 
-export function Clinica({ navigation }) {
+export function Clinica({ navigation, route }) {
 
     const [clinicaLista, setClinicaLista] = useState(null);
-    const [selectedId, setSelectedId] = useState(null);
+    const [clinica, setClinica] = useState(null);
 
     useEffect(() => {
         Get()
     }, [])
+    function handleContinue() {
+        navigation.replace("Medico", {
+            agendamento: {
+                ...route.params.agendamento,
+
+                ...clinica
+            }
+        }
+        )
+    }
+
+
 
 
     async function Get() {
-        await api.get('/Clinica/ListarTodas').then((response) =>
+        await api.get(`/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.localizacao}`).then((response) =>
             setClinicaLista(response.data)
         ).catch(
             (error) => console.log(error)
@@ -34,10 +46,12 @@ export function Clinica({ navigation }) {
             <FlatList
                 style={{ width: "90%" }}
                 data={clinicaLista}
-                renderItem={({ item }) => <CardClinica data={item} onPress={() => setSelectedId(item.id)} borderColor={item.id === selectedId ? '#496BBA' : '#FFFFFF'} />}
+                renderItem={({ item }) => <CardClinica data={item} onPress={() => setClinica(item)} borderColor={clinica != null && item.id === clinica.id ? '#496BBA' : '#FFFFFF'} />}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false} />
-            <Button onPress={() => navigation.navigate('Medico')}><ButtonTitle>Continuar</ButtonTitle></Button>
+            <Button onPress={handleContinue}
+
+            ><ButtonTitle>Continuar</ButtonTitle></Button>
             <TouchableOpacity onPress={() => navigation.navigate('Main', { Aparece: true })}>
                 <DbLink>Cancelar</DbLink>
             </TouchableOpacity>
