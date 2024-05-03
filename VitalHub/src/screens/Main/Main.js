@@ -3,11 +3,25 @@ import { Home } from '../Home/Home';
 import { Perfil } from '../Perfil/Perfil';
 import { ContentIcon, TextIcon } from './style';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { userDecodeToken } from '../../../utils/Auth';
+import { useEffect, useState } from 'react';
 
 const BottomTab = createBottomTabNavigator();
 
-export function Main({ route }) {
+export function Main({ navigation, route }) {
   const Aparece = route.params;
+  const [user, setUser] = useState()
+
+  async function profileLoad() {
+    setUser(await userDecodeToken)
+
+    if (user?.cpf == null) {
+      navigation.navigate("Perfil")
+    }
+  }
+
+  profileLoad
+
 
   return (
     <BottomTab.Navigator

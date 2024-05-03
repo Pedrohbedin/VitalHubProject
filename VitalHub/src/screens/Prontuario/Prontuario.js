@@ -22,10 +22,8 @@ export function Prontuario({ navigation, route }) {
     const [consultaAtualizada, setConsultaAtualizada] = useState([]);
 
     async function Salvar() {
-        await api.put('/Consultas/Prontuario', consultaAtualizada).then(response => console.log(response))
+        await api.put('/Consultas/Prontuario', consultaAtualizada).then(response => console.log("Consulta Atualizada!!!"))
             .catch(error => console.log(error))
-
-        console.log(consultaAtualizada)
         setEditable(false)
     }
 

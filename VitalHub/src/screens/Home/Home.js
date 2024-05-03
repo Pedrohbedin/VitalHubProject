@@ -87,7 +87,7 @@ export function Home({ navigation }) {
             trigger: null
         })
     }
-    
+
     return (
         user == null ?
             <ActivityIndicator animating={true} />

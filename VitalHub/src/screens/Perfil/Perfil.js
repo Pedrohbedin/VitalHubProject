@@ -25,15 +25,16 @@ export function Perfil({ navigation }) {
     const [logradouro, setLogradouro] = useState(null)
     const [cep, setCep] = useState(null)
     const [cidade, setCidade] = useState(null)
+    const [rg, setRg] = useState(null)
 
     const [showCamera, setShowCamera] = useState(false);
     const [uri, setUri] = useState("");
 
-    
+
     useEffect(() => {
         profileLoad()
     }, [])
-    
+
     useEffect(() => {
         fetchData()
     }, [user])
@@ -42,7 +43,7 @@ export function Perfil({ navigation }) {
         setUser(await userDecodeToken());
         fetchData(await userDecodeToken())
     }
-    
+
     async function fetchData() {
         try {
             const response = await api.get(`/${user?.role}s/BuscarPorId?id=${user?.id}`);
@@ -52,6 +53,8 @@ export function Perfil({ navigation }) {
             setLogradouro(response.data.endereco.logradouro)
             setCep(response.data.endereco.cep)
             setCidade(response.data.endereco.cidade)
+            setRg(response.data.rg)
+            setUri(response.data.idNavigation.foto)
         } catch (error) {
             console.log(error);
         }
@@ -74,9 +77,11 @@ export function Perfil({ navigation }) {
             cpf: userData.cpf,
             dataNascimento: isoDateString,
             cep: userData.endereco.cep,
+            rg: userData.rg,
             logradouro: userData.endereco.logradouro,
             cidade: userData.endereco.cidade
-        }).then((response) => console.log(response.data)).catch((error) => console.log(error))
+        }).then((response) => { console.log("Perfil atualizado!!!"), navigation.navigate("Main") }).catch((error) => console.log(error))
+
     }
 
     //Fução para alterar a imagem do usuario
@@ -89,9 +94,7 @@ export function Perfil({ navigation }) {
             name: `image.${uri.split(".")[1]}`,
             type: `image/${uri.split(".")[1]}`
         });
-
-        console.log(uri)
-
+        
         await api.put(`/Usuario/AlterarFotoPerfil?idUsuario=${user?.id}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
@@ -157,6 +160,20 @@ export function Perfil({ navigation }) {
 
                         />
 
+                        <MiddleTitle textAlign="left">RG</MiddleTitle>
+
+                        <InfoInput
+                            value={rg}
+                            editable={editable}
+                            keyboardType="numeric"
+                            style={[
+                                editable && { borderColor: '#49B3BA', borderWidth: 1 },
+                                editable && { color: '#49B3BA' }
+                            ]}
+                            onChangeText={(txt) => setRg(txt)}
+
+                        />
+
                         <MiddleTitle textAlign="left">Endereço</MiddleTitle>
 
                         <InfoInput
@@ -214,13 +231,22 @@ export function Perfil({ navigation }) {
                 </ScrollView>
                 :
                 <ScrollView>
+                    <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={setUri} />
                     <Container>
-                        <PerfilImage source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtLjcoLe9I_D5EcQ_2QHPDrx7PxSK4bC5chSDZKvU4g&s', }} />
+                        <View style={{ width: "100%" }}>
+                            <PerfilImage source={{ uri: user.foto, }} />
+                            <ButtonCamera onPress={() => setShowCamera(true)}>
+                                <MaterialCommunityIcons
+                                    name="camera-plus"
+                                    size={20}
+                                    color={"#fbfbfb"} />
+                            </ButtonCamera>
+                        </View>
 
-                        <PerfilForm>
+                        <View style={{ marginTop: 30, marginBottom: 30 }}>
                             <Title>{user.name}</Title>
                             <Text>{user.email}</Text>
-                        </PerfilForm>
+                        </View>
 
                         <MiddleTitle textAlign="left">Especialidade</MiddleTitle>
 

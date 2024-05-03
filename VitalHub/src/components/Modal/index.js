@@ -75,24 +75,25 @@ export const ConsultaModal = ({ show, onAction }) => {
 
     const [statusLista, setStatusLista] = useState("")
     const navigation = useNavigation();
-
-    const Continuar = () => {
-
-        navigation.replace('Clinica');
-    }
-
     const [nivelPrioridade, setNivelPrioridade] = useState(null);
 
 
 
-    const [agendamento, setAgendamento] = useState(null);  //criado dia 29/04
+    const [agendamento, setAgendamento] = useState(null);
 
     async function handleContinue() {
-        //await setShowModalAgendamento(false);
 
         navigation.replace("Clinica", { agendamento: agendamento }
         )
     }
+
+    useEffect(() => {
+        setAgendamento({
+            ...agendamento,
+            prioridadeId: nivelPrioridade,
+            prioridadeLabel: statusLista
+        })
+    }, [nivelPrioridade, statusLista])
 
     return (
         show &&
@@ -107,39 +108,11 @@ export const ConsultaModal = ({ show, onAction }) => {
                     <Title margin="0px 0px 20px 0px">Agendar consulta</Title>
                     <Text>Qual o nível da consulta</Text>
                     <SpacedContainer padding="0px 0px 20px 0px">
-                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Rotina"} clickButton={statusLista === "Rotina"} onPress={() => {
-                            setNivelPrioridade("07929CCD-218F-4749-A171-ECF7E0E57682"), setStatusLista("Rotina"), setAgendamento({
-                                ...agendamento,
-                                prioridadeId: "07929CCD-218F-4749-A171-ECF7E0E57682",
-                                prioridadeLabel: "Rotina"
+                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Rotina"} clickButton={statusLista === "Rotina"} onPress={() => { setNivelPrioridade("07929CCD-218F-4749-A171-ECF7E0E57682"), setStatusLista("Rotina") }} />
 
-                            })
-                        }}
-                        />
+                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Exame"} clickButton={statusLista === "Exame"} onPress={() => { setNivelPrioridade("7F09D39C-F2AE-4F3E-BE10-72D76B20450E"), setStatusLista("Exame") }} />
 
-                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Exame"} clickButton={statusLista === "Exame"} onPress={() => {
-                            setNivelPrioridade("7F09D39C-F2AE-4F3E-BE10-72D76B20450E"), setStatusLista("Exame"), setAgendamento({
-
-                                ...agendamento,
-                                prioridadeId: "7F09D39C-F2AE-4F3E-BE10-72D76B20450E",
-                                prioridadeLabel: "Exame"
-                            })
-                        }}
-                        />
-
-
-                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Urgência"} clickButton={statusLista === "Urgência"} onPress={() => {
-                            setNivelPrioridade("9AD5E3B8-9032-4A3E-88BA-E2A3510CD081"), setStatusLista("Urgência"), setAgendamento({
-
-
-                                ...agendamento,
-                                prioridadeId: "9AD5E3B8-9032-4A3E-88BA-E2A3510CD081",
-                                prioridadeLabel: "Urgencia"
-                            })
-
-                        }}
-                        />
-
+                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Urgência"} clickButton={statusLista === "Urgência"} onPress={() => { ("9AD5E3B8-9032-4A3E-88BA-E2A3510CD081"), setStatusLista("Urgência") }} />
 
                     </SpacedContainer>
                     <Text>Informe a localização desejada</Text>
@@ -248,7 +221,6 @@ export const AgendarModal = ({ show, onConfirm, onCancel, agendamento }) => {
 
 export const DescModal = ({ data, show, onAction }) => {
     const navigation = useNavigation();
-    console.log(data)
     const Local = () => {
 
         navigation.navigate('Local', { clinicaId: data.medicoClinica.clinicaId });

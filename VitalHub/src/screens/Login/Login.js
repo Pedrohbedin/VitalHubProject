@@ -19,35 +19,27 @@ export function Login({ navigation }) {
 
     async function Logar() {
         await api.post('/Login', {
-            // email: email,
-            // senha: senha
-            email: "emanuel@gmail.com",
-            senha: "emanuel1234"
+            email: "pedro@gmail.com",
+            senha: "pedro1234"
         }).then(async (response) => {
             await AsyncStore.setItem("token", JSON.stringify(response.data))
             navigation.navigate("Main")
         }
         ).catch((error) => {
-            console.log(error);
-
             if (error.response && error.response.status === 401) {
-
                 setIsEmailValid(false);
                 setIsSenhaValid(false);
             }
+            console.log(error)
         })
     }
-    useEffect (() => {
 
+    useEffect(() => {
         setIsEmailValid(true)
         setIsSenhaValid(true)
-        
-    }, [
-            email,
-            senha
-        ]);
+    }, [email, senha]);
 
-   
+
 
     return (
         <Container>
@@ -63,6 +55,7 @@ export function Login({ navigation }) {
                 onChangeText={txt => setEmail(txt)}
                 style={isEmailValid ? {} : { borderColor: 'red' }}
             />
+
             <Input
                 placeholder="Senha"
                 placeholderTextColor="#49B3BA"
@@ -72,8 +65,7 @@ export function Login({ navigation }) {
                 style={isSenhaValid ? {} : { borderColor: 'red' }}
             />
 
-            <GrayLink
-                onPress={() => navigation.navigate('EsqueceuSenha')}>Esqueceu sua senha?</GrayLink>
+            <GrayLink onPress={() => navigation.navigate('EsqueceuSenha')}>Esqueceu sua senha?</GrayLink>
 
             <Button onPress={Logar}>
                 <ButtonTitle>Entrar</ButtonTitle>
@@ -89,7 +81,10 @@ export function Login({ navigation }) {
                 <BorderedButtonTitle>Entrar com Google</BorderedButtonTitle>
             </BorderedButton>
 
-            <Text margin="20px 0px" fontSize="14px" fontFamily="MontserratAlternates_600SemiBold">Não tem conta? <LbLink onPress={() => navigation.navigate('Cadastrar')}>Crie uma conta agora!</LbLink></Text>
+            <Text margin="20px 0px" fontSize="14px" fontFamily="MontserratAlternates_600SemiBold">
+                Não tem conta?
+                <LbLink onPress={() => navigation.navigate('Cadastrar')}>Crie uma conta agora!</LbLink>
+            </Text>
 
         </Container >
     )

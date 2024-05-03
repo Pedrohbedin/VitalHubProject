@@ -13,8 +13,10 @@ export const Card = ({
     onClick,
     urlFotoPaciente = "https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg"
 }) => {
+
+    console.log(data)
     return (
-        <TouchableWithoutFeedback onPress={() => onAction()}>
+        <TouchableWithoutFeedback onPress={() => onClick()}>
             <CardContainer
                 style={{
                     marginVertical: 20,

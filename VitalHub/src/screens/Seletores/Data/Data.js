@@ -26,10 +26,6 @@ export function DataPage({ navigation, route }) {
         setModal(true)
     }
 
-    useEffect(() => {
-        console.log(agendamento)
-    }, [agendamento])
-
     return (
         <>
             <AgendarModal

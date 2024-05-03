@@ -28,6 +28,9 @@ namespace WebAPI.Repositories
                 if (paciente.Cpf != null)
                     pacienteBuscado!.Cpf = paciente.Cpf;
 
+                if (paciente.Rg != null)
+                    pacienteBuscado!.Rg = paciente.Rg;
+
                 if (paciente.Logradouro != null)
                     pacienteBuscado!.Endereco!.Logradouro = paciente.Logradouro;
 

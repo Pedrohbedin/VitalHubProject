@@ -15,18 +15,17 @@ export function Medico({ navigation, route }) {
 
     useEffect(() => {
         Get()
-        console.log(medico)
     }, [medico])
 
- 
-     function handleContinue(){
+
+    function handleContinue() {
         navigation.replace("Data", {
-            agendamento : {
+            agendamento: {
                 ...route.params.agendamento,
                 ...medico
             }
         })
-     }
+    }
 
     async function Get() {
         await api.get(`/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.id}`).then((response) =>

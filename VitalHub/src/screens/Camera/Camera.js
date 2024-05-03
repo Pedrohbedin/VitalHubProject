@@ -59,17 +59,7 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
         }
     }
 
-    // function FlashPhoto() {
-    //     setFlashMode(!flashMode)
-    //     console.log(flashMode)
-    // }
-
     async function UploadPhoto() {
-        // await MediaLibrary.createAssetAsync(photo).then(() => {
-        //     alert("Foto salva com sucesso")
-        // }).catch(error => {
-        //     alert("Não foi possivel processar a foto")
-        // })
         setUriCameraCapture(photo)
         setOpenModal(false)
     }
