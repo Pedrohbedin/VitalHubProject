@@ -72,71 +72,105 @@ export const ProntuarioModal = ({ show, data, onAction }) => {
 
 
 export const ConsultaModal = ({ show, onAction }) => {
-
-    const [statusLista, setStatusLista] = useState("")
-    const navigation = useNavigation();
+    const [statusLista, setStatusLista] = useState('');
     const [nivelPrioridade, setNivelPrioridade] = useState(null);
-
-
-
     const [agendamento, setAgendamento] = useState(null);
+    const [isButtonPressed, setIsButtonPressed] = useState(false); 
+    const navigation = useNavigation();
 
-    async function handleContinue() {
-
-        navigation.replace("Clinica", { agendamento: agendamento }
-        )
-    }
+   
+    const handleContinue = () => {
+        if (isButtonPressed) {
+            navigation.replace('Clinica', { agendamento: agendamento });
+        }
+    };
 
     useEffect(() => {
         setAgendamento({
             ...agendamento,
             prioridadeId: nivelPrioridade,
             prioridadeLabel: statusLista
-        })
-    }, [nivelPrioridade, statusLista])
+        });
+    }, [nivelPrioridade, statusLista]);
 
     return (
-        show &&
-        <Modal
-            transparent
-            animationType="fade"
-            visible={true}
-        >
+        show && (
+            <Modal transparent animationType="fade" visible={true}>
+                <ModalBackground show={show}>
+                    <ModalContent
+                        fieldWidth="100%"
+                        height="75%"
+                        position="absolute"
+                        padding="10px"
+                        justify="center"
+                    >
+                        <Title margin="0px 0px 20px 0px">Agendar consulta</Title>
+                        <Text>Qual o nível da consulta</Text>
+                        <SpacedContainer padding="0px 0px 20px 0px">
+                            <BtnListAppointment
+                                backgroundColor="a"
+                                borderColor={'#34898F'}
+                                colorText="#34898F"
+                                textButton={'Rotina'}
+                                clickButton={statusLista === 'Rotina'}
+                                onPress={() => {
+                                    setNivelPrioridade('07929CCD-218F-4749-A171-ECF7E0E57682'),
+                                    setStatusLista('Rotina'),
+                                    setIsButtonPressed(true);
+                                }}
+                            />
 
-            <ModalBackground show={show}>
-                <ModalContent fieldWidth="100%" height="75%" position="absolute" padding="10px" justify="center">
-                    <Title margin="0px 0px 20px 0px">Agendar consulta</Title>
-                    <Text>Qual o nível da consulta</Text>
-                    <SpacedContainer padding="0px 0px 20px 0px">
-                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Rotina"} clickButton={statusLista === "Rotina"} onPress={() => { setNivelPrioridade("07929CCD-218F-4749-A171-ECF7E0E57682"), setStatusLista("Rotina") }} />
+                            <BtnListAppointment
+                                backgroundColor="a"
+                                borderColor={'#34898F'}
+                                colorText="#34898F"
+                                textButton={'Exame'}
+                                clickButton={statusLista === 'Exame'}
+                                onPress={() => {
+                                    setNivelPrioridade('7F09D39C-F2AE-4F3E-BE10-72D76B20450E'),
+                                    setStatusLista('Exame'),
+                                    setIsButtonPressed(true);
+                                }}
+                            />
 
-                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Exame"} clickButton={statusLista === "Exame"} onPress={() => { setNivelPrioridade("7F09D39C-F2AE-4F3E-BE10-72D76B20450E"), setStatusLista("Exame") }} />
-
-                        <BtnListAppointment backgroundColor="a" borderColor={"#34898F"} colorText="#34898F" textButton={"Urgência"} clickButton={statusLista === "Urgência"} onPress={() => { ("9AD5E3B8-9032-4A3E-88BA-E2A3510CD081"), setStatusLista("Urgência") }} />
-
-                    </SpacedContainer>
-                    <Text>Informe a localização desejada</Text>
-                    <Input placeholder="Informe a localização" placeholderTextColor="#34898F" margin="0px 0px 30px 0px"
-                        value={agendamento ? agendamento.localizacao : null}
-                        onChangeText={(txt) => setAgendamento({
-                            ...agendamento,
-                            localizacao: txt
-                        })}
-
-                    />
-
-                    <Button onPress={handleContinue}>
-
-                        <ButtonTitle colorText="#FFFFFF">Continuar</ButtonTitle>
-                    </Button>
-                    <TouchableOpacity onPress={onAction}>
-                        <DbLink>Cancelar</DbLink>
-                    </TouchableOpacity>
-                </ModalContent>
-            </ModalBackground>
-        </Modal>
-    )
-}
+                            <BtnListAppointment
+                                backgroundColor="a"
+                                borderColor={'#34898F'}
+                                colorText="#34898F"
+                                textButton={'Urgência'}
+                                clickButton={statusLista === 'Urgência'}
+                                onPress={() => {
+                                    setNivelPrioridade('9AD5E3B8-9032-4A3E-88BA-E2A3510CD081'),
+                                    setStatusLista('Urgência'),
+                                    setIsButtonPressed(true);
+                                }}
+                            />
+                        </SpacedContainer>
+                        <Text>Informe a localização desejada</Text>
+                        <Input
+                            placeholder="Informe a localização"
+                            placeholderTextColor="#34898F"
+                            margin="0px 0px 30px 0px"
+                            value={agendamento ? agendamento.localizacao : null}
+                            onChangeText={txt =>
+                                setAgendamento({
+                                    ...agendamento,
+                                    localizacao: txt
+                                })
+                            }
+                        />
+                        <Button onPress={handleContinue} backgroundColor= {!isButtonPressed && "#ccc"} borderColor={!isButtonPressed && "#ccc"}>
+                            <ButtonTitle colorText="#FFFFFF">Continuar</ButtonTitle>
+                        </Button>
+                        <TouchableOpacity onPress={onAction}>
+                            <DbLink>Cancelar</DbLink>
+                        </TouchableOpacity>
+                    </ModalContent>
+                </ModalBackground>
+            </Modal>
+        )
+    );
+};
 
 export const AgendarModal = ({ show, onConfirm, onCancel, agendamento }) => {
 
