@@ -159,7 +159,7 @@ export const ConsultaModal = ({ show, onAction }) => {
                                 })
                             }
                         />
-                        <Button onPress={handleContinue} backgroundColor= {!isButtonPressed && "#ccc"} borderColor={!isButtonPressed && "#ccc"}>
+                        <Button onPress={handleContinue} backgroundColor= {!isButtonPressed && "#ccc"} disabled={!isButtonPressed} borderColor={!isButtonPressed && "#ccc"}>
                             <ButtonTitle colorText="#FFFFFF">Continuar</ButtonTitle>
                         </Button>
                         <TouchableOpacity onPress={onAction}>
