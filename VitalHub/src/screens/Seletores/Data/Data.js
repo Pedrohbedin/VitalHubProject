@@ -14,7 +14,6 @@ export function DataPage({ navigation, route }) {
     const [agendamento, setAgendamento] = useState(null);
     const [dataSelecionado, setDataSelecionado] = useState(null);
     const [horaSelecionada, setHoraSelecionada] = useState(null);
-    const [buttonScale] = useState(new Animated.Value(1));
 
     function handleContinue() {
         setAgendamento({
@@ -23,13 +22,6 @@ export function DataPage({ navigation, route }) {
         });
         setModal(true);
     }
-
-    const pulseButton = () => {
-        Animated.sequence([
-            Animated.timing(buttonScale, { toValue: 0.9, duration: 200, useNativeDriver: true }),
-            Animated.timing(buttonScale, { toValue: 1, duration: 200, useNativeDriver: true })
-        ]).start();
-    };
 
     return (
         <>
@@ -55,13 +47,13 @@ export function DataPage({ navigation, route }) {
                 <InputSelect
                     setHoraSelecionada={setHoraSelecionada}
                 />
-                <Button>
+                <Button disabled={!horaSelecionada || !dataSelecionado} backgroundColor={!horaSelecionada && '#ccc'} borderColor={!horaSelecionada && '#ccc'} onPress={handleContinue}>
                     <ButtonTitle colorText="#FFFFFF">Confirmar</ButtonTitle>
-                </Button>0 
+                </Button>
                 <TouchableOpacity onPress={() => navigation.navigate('Medico')}>
                     <DbLink>Cancelar</DbLink>
                 </TouchableOpacity>
-            </Container>
+            </Container >
         </>
     );
 }

@@ -16,6 +16,7 @@ export function Login({ navigation }) {
     const [senha, setSenha] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(true);
     const [isSenhaValid, setIsSenhaValid] = useState(true);
+    const [show, setShow] = useState()
 
     async function Logar() {
         await api.post('/Login', {
