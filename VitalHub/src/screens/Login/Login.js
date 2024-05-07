@@ -9,6 +9,7 @@ import { Text } from "../../components/Text/style";
 import { useEffect, useState } from "react";
 import AsyncStore from '@react-native-async-storage/async-storage';
 import api from "../../services/services";
+import PasswordInput from "../../components/Input";
 
 export function Login({ navigation }) {
 
@@ -16,7 +17,7 @@ export function Login({ navigation }) {
     const [senha, setSenha] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(true);
     const [isSenhaValid, setIsSenhaValid] = useState(true);
-    const [show, setShow] = useState()
+    const [show, setShow] = useState(false)
 
     async function Logar() {
         await api.post('/Login', {
@@ -57,14 +58,15 @@ export function Login({ navigation }) {
                 style={isEmailValid ? {} : { borderColor: 'red' }}
             />
 
-            <Input
+            {/* <Input
                 placeholder="Senha"
                 placeholderTextColor="#49B3BA"
                 value={senha}
                 onChangeText={txt => setSenha(txt)}
-                secureTextEntry={true}
+                secureTextEntry={!show}
                 style={isSenhaValid ? {} : { borderColor: 'red' }}
-            />
+            /> */}
+            <PasswordInput secureTextChange={setShow} secureTextEntry={show} value={senha} setValue={setSenha} valid={isSenhaValid}/>
 
             <GrayLink onPress={() => navigation.navigate('EsqueceuSenha')}>Esqueceu sua senha?</GrayLink>
 

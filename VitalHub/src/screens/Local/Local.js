@@ -32,7 +32,7 @@ export function Local({ navigation, route }) {
                 setClinica(response.data)
             }).catch(error => console.log(error))
     }
-
+ 
 
     async function CapturarLocalizacao() {
         const { granted } = await requestForegroundPermissionsAsync();
@@ -89,7 +89,8 @@ export function Local({ navigation, route }) {
                     <Text>Localização não encontrada</Text>
                     <ActivityIndicator />
                 </Container>
-            </> :
+            </>
+            :
             initialPosition != null ?
                 <>
                     <Container>
