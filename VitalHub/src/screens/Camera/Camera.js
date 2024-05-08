@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Image, Modal, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera } from 'expo-camera/legacy';
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import * as MediaLibrary from "expo-media-library"
@@ -33,14 +33,18 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
 
     const cameraRef = useRef(null)
 
+
     async function CapturePhoto() {
         if (cameraRef) {
             const photo = await cameraRef.current.takePictureAsync()
             setPhoto(photo.uri)
 
+            console.log("Referencia de camera: " + cameraRef);
             setOpenModal(true)
         }
     }
+
+
 
     async function GetLatestPhoto() {
         const { assets } = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
@@ -80,12 +84,11 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
         <Modal visible={visible} transparent>
             <View style={styles.container}>
                 <View style={styles.cameraContainer}>
-                    <Camera
+                    <Camera   
                         ref={cameraRef}
                         style={styles.camera}
                         ratio='16:9'
                         type={tipoCamera ? "back" : "front"}
-                    // flashMode={flashMode ? "on" : "off"}
                     >
                         <TouchableOpacity style={{ margin: 40 }} onPress={() => setShowCameraModal(false)}>
                             <Icon
@@ -97,9 +100,6 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
                         </TouchableOpacity>
                         <View style={styles.viewFlip}></View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', backgroundColor: 'rgba(0, 0, 0, .5)', alignItems: 'center' }}>
-                            {/* <TouchableOpacity style={styles.btnFlash} onPress={FlashPhoto}>
-                                <FontAwesome name="bolt" size={24} color={flashMode ? "yellow" : "#FFF"} />
-                            </TouchableOpacity> */}
                             <TouchableOpacity onPress={SelectImageGallery}>
                                 {lastPhoto != null ? (<LastPhoto source={{ uri: lastPhoto }} />) : (<LastPhoto />)}
                             </TouchableOpacity>
