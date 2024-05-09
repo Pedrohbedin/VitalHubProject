@@ -148,12 +148,12 @@ const styles = StyleSheet.create(
       display: 'none'
     },
     calendarHeaderStyle: {
-      fontSize: 22,
+      fontSize: 20,
       textAlign: "center",
       alignSelf: 'flex-start',
       color: '#4E4B59',
-      fontFamily: "Quicksand_600SemiBold",
-      paddingHorizontal: 16
+      fontFamily: "MontserratAlternates_600SemiBold",
+      paddingHorizontal: 35
     },
     nameDateStyle: {
       color: "#ACABB7",

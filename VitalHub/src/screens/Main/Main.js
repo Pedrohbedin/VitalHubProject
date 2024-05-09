@@ -26,7 +26,7 @@ export function Main({ navigation, route }) {
   return (
     <BottomTab.Navigator
       screenOptions={({ route }) => ({
-        tabBarStyle: { backgroundColor: '#FFFFFF', height: 80 },
+        tabBarStyle: { backgroundColor: '#FFFFFF', height: 60 },
         tabBarActiveBackgroundColor: "transparent",
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Footer = styled.View`
     width: 100%;
-    height: ${(props) => props.height || "75px"};
+    height: ${(props) => props.height || "60px"};
     flex-direction: row;
     justify-content: ${(props) => props.JustifyContent || "space-around"};
     align-items: center;
@@ -11,7 +11,8 @@ export const Footer = styled.View`
     position: absolute;
     bottom: 0;
     background-color: ${(props) => props.tipoConta == "Dr" ? "#FFFFFF" : "transparent"};
-    padding: ${(props) => props.padding || "0px"}
+    padding: ${(props) => props.padding || "0px"};
+    margin-bottom: 20px;
 `;
 
 export const FooterButton = styled.TouchableOpacity`

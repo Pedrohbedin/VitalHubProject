@@ -94,7 +94,7 @@ export function Perfil({ navigation }) {
             name: `image.${uri.split(".")[1]}`,
             type: `image/${uri.split(".")[1]}`
         });
-        
+
         await api.put(`/Usuario/AlterarFotoPerfil?idUsuario=${user?.id}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
@@ -130,7 +130,7 @@ export function Perfil({ navigation }) {
                         </View>
 
                         <View style={{ marginTop: 30, marginBottom: 30 }}>
-                            <Title>{user.name}</Title>
+                            <Text fontFamily="MontserratAlternates_600SemiBold" fontSize="20px" colorText="#33303E">{user.name}</Text>
                             <Text>{user.email}</Text>
                         </View>
 
@@ -243,8 +243,8 @@ export function Perfil({ navigation }) {
                             </ButtonCamera>
                         </View>
 
-                        <View style={{ marginTop: 30, marginBottom: 30 }}>
-                            <Title>{user.name}</Title>
+                        <View style={{ marginTop: 30, marginBottom: 30, justifyContent: "center", alignItems: "center" }}>
+                            <Text fontFamily="MontserratAlternates_600SemiBold" fontSize="20px" colorText="#33303E">{user.name}</Text>
                             <Text>{user.email}</Text>
                         </View>
 

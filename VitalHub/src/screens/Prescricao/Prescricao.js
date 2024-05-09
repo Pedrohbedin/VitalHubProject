@@ -44,13 +44,13 @@ export function Prescricao({ navigation, route }) {
                     <Text fieldWidth="auto">CRM - {route.params.data.medicoClinica.medico.crm}</Text>
                 </View>
                 <MiddleTitle textAlign="left">Descrição da consulta</MiddleTitle>
-                <InfoInput multiline numberOfLines={5} style={{ textAlignVertical: 'top' }} value={route.params.data.descricao} />
+                <InfoInput editable={false} multiline numberOfLines={5} style={{ textAlignVertical: 'top' }} value={route.params.data.descricao} />
                 <MiddleTitle textAlign="left">Diagnóstico do paciente</MiddleTitle>
-                <InfoInput style={{ textAlignVertical: 'top' }} value={route.params.data.diagnostico} />
+                <InfoInput editable={false} style={{ textAlignVertical: 'top' }} value={route.params.data.diagnostico} />
                 <MiddleTitle textAlign="left">Prescrição médica</MiddleTitle>
-                <InfoInput multiline numberOfLines={5} style={{ textAlignVertical: 'top' }} />
+                <InfoInput editable={false} multiline numberOfLines={5} style={{ textAlignVertical: 'top' }} value={route.params.data.receita.medicamento} />
                 <MiddleTitle textAlign="left">Exames médicos</MiddleTitle>
-                <InfoInput multiline numberOfLines={5} style={{ textAlign: "center" }} placeholder={"Nenhuma foto informada"} value={descricao} />
+                <InfoInput editable={false} multiline numberOfLines={5} style={{ textAlign: "center" }} placeholder={"Nenhuma foto informada"} value={descricao} />
                 <SpacedContainer>
                     <Button onPress={() => setShowCameraModal(true)} backgroundColor="#49B3BA" borderColor="#49B3BA" style={{ flex: 1, flexDirection: "row", justifyContent: "center" }} >
                         <Icon
@@ -68,7 +68,7 @@ export function Prescricao({ navigation, route }) {
                 </SpacedContainer>
 
                 <View style={{ width: "90%", height: 2, backgroundColor: "#8C8A97" }}></View>
-                <InfoInput multiline numberOfLines={5} style={{ textAlign: "center" }} placeholder="Resultado do exame de sangue : tudo normal" />
+                <InfoInput editable={false} multiline numberOfLines={5} style={{ textAlign: "center" }} placeholder="Resultado do exame de sangue : tudo normal" />
                 <TouchableOpacity onPress={() => navigation.navigate("Main")}>
                     <DbLink>Voltar</DbLink>
                 </TouchableOpacity>

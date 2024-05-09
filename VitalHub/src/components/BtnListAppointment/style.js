@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ButtonTabsStyle = styled.TouchableOpacity`
-    padding: ${(props) => props.padding || "12px 14px"};
+    padding: 12px 14px;
     border-radius: ${(props) => props.borderRadius || "5px"};
     border: 2px solid;
     border-color: ${(props) => props.borderColor || "#496BBA"};
@@ -11,8 +11,8 @@ export const ButtonTabsStyle = styled.TouchableOpacity`
 `
 
 export const ButtonTextStyle = styled.Text`
-    font-family: 'MontserratAlternates_700Bold';
-    font-size: 14px;
+    font-family: 'MontserratAlternates_600SemiBold';
+    font-size: 12px;
 
     color: ${(props) => props.clickButton ? "#FBFBFB" : props.colorText == "" ? "#496BBA" : "#34898F"}
 `

@@ -16,40 +16,52 @@ export function Prontuario({ navigation, route }) {
     const [descricao, setDescricao] = useState(null)
     const [diagnostico, setDiagnostico] = useState(null)
     const [prescricao, setPrescricao] = useState(null)
+    const [idade, setIdade] = useState()
 
     const [editable, setEditable] = useState(false);
 
     const [consultaAtualizada, setConsultaAtualizada] = useState([]);
 
     async function Salvar() {
-        await api.put('/Consultas/Prontuario', consultaAtualizada).then(response => console.log("Consulta Atualizada!!!"))
+        await api.put('/Consultas/Prontuario', consultaAtualizada).then((response) => console.log(response))
             .catch(error => console.log(error))
         setEditable(false)
     }
 
     useEffect(() => {
         setConsultaAtualizada(route.params.data);
-
+        setPrescricao(route.params.data.receita.medicamento)
         setDescricao(route.params.data.descricao);
         setDiagnostico(route.params.data.diagnostico);
     }, [route])
 
     useEffect(() => {
-        consultaAtualizada.descricao = descricao;
-        consultaAtualizada.diagnostico = diagnostico;
-    }, [descricao, diagnostico])
+        setConsultaAtualizada({
+            consultaId: route.params.data.id,
+            medicamento: prescricao,
+            descricao: descricao,
+            diagnostico: diagnostico,
+        })
+        console.log(consultaAtualizada)
+    }, [descricao, diagnostico, prescricao])
 
 
+    useEffect(() => {
+        if (route.params.data.paciente != null) {
+            const dataPasciente = new Date(route.params.data.paciente.dataNascimento)
+            const teste = new Date()
+            setIdade(Math.floor((teste.getTime() - dataPasciente.getTime()) / (1000 * 60 * 60 * 24 * 365.25)))
+        }
+    }, [route.params.data])
 
     return (
         descricao === null ? <ActivityIndicator /> :
             <ScrollView>
-                <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={setUri} />
                 <Container>
-                    <PerfilImage source={{ uri: 'https://media.istockphoto.com/id/1226551176/pt/foto/advertisement-concept-side-view-half-face-profile-with-copy-space-of-perfect-smiling-man.jpg?s=612x612&w=0&k=20&c=5Hf34eKWwSFbRKoWfX1GlgxZvjKvURk_Id0PERH2MmE=', }} />
+                    <PerfilImage source={{ uri: route.params.data.paciente.idNavigation.foto }} />
                     <Title>{route.params.data.paciente.idNavigation.nome}</Title>
                     <SpacedContainer style={{ width: "auto", gap: 20 }}>
-                        <Text fieldWidth="auto">22 anos</Text>
+                        <Text fieldWidth="auto">{idade} anos</Text>
                         <Text fieldWidth="auto">{route.params.data.paciente.idNavigation.email}</Text>
                     </SpacedContainer>
                     <MiddleTitle>Descrição da consulta</MiddleTitle>
@@ -61,6 +73,7 @@ export function Prontuario({ navigation, route }) {
                     <MiddleTitle>Prescrição médica</MiddleTitle>
                     <InfoInput editable={editable} multiline numberOfLines={5} placeholder="Prescrição medica" style={[editable && { borderColor: '#49B3BA', borderWidth: 1 },
                     editable && { color: '#49B3BA' }, { textAlignVertical: 'top' }]} value={prescricao} onChangeText={txt => setPrescricao(txt)} />
+
                     <Button onPress={Salvar}>
                         <ButtonTitle>Salvar</ButtonTitle>
                     </Button>

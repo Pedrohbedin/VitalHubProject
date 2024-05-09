@@ -52,12 +52,23 @@ export function Home({ navigation }) {
     }, [])
 
     async function Get() {
-        await api.get(`/${user?.role}s/BuscarPorData?data=${dataConsulta}&id=${user?.id}`).then((response) =>
-            setConsultasLista(response.data),
-        ).catch(
-            (error) => console.log(error)
-        )
+        user?.role != null && user?.id != null && dataConsulta != null &&
+            await api.get(`/${user?.role}s/BuscarPorData?data=${dataConsulta}&id=${user?.id}`).then((response) =>
+                setConsultasLista(response.data),
+            ).catch(() => console.log("Deu erro!!!")
+            )
     }
+    
+    useEffect(() => {
+        consultasLista != null &&
+            consultasLista.forEach(element => {
+                let dataAtual = new Date();
+                let dataConsulta = new Date(element.dataConsulta);
+                if (parseInt(dataConsulta.getTime()) < parseInt(dataAtual.getTime())) {
+                    api.put(`/Consultas/Status?idConsulta=${element.id}&status=Realizada`)
+                }
+            });
+    }, [consultasLista])
 
     function Precionado(item) {
         setModalDesc(true)
@@ -121,7 +132,7 @@ export function Home({ navigation }) {
                 </Header>
                 <Container style={{ marginTop: -70 }}>
                     <HomeCalendarComponent setDataConsulta={setDataConsulta} />
-                    <SpacedContainer>
+                    <SpacedContainer padding="0px 20px">
                         <BtnListAppointment textButton={"Agendadas"} clickButton={statusLista === "Agendada"} onPress={() => setStatusLista("Agendada")} />
                         <BtnListAppointment textButton={"Realizadas"} clickButton={statusLista === "Realizada"} onPress={() => setStatusLista("Realizada")} />
                         <BtnListAppointment textButton={"Canceladas"} clickButton={statusLista === "Cancelada"} onPress={() => setStatusLista("Cancelada")} />
@@ -131,7 +142,8 @@ export function Home({ navigation }) {
                         renderItem={({ item }) =>
                             (item.situacao.situacao == statusLista)
                             &&
-                            (< Card
+                            (
+                            < Card
                                 role={user?.role}
                                 data={item}
                                 onAction={
@@ -140,10 +152,10 @@ export function Home({ navigation }) {
                                         statusLista == "Agendada" ?
                                             setModalCancelar(true)
                                             :
-                                            user?.role == "Medico" ? item.descricao != null ? navigation.navigate("Prontuario", { data: item }) : setModalProntuario(true) : navigation.navigate("Prescricao", { data: item })
+                                            user?.role == "Medico" ? item.descricao != null && item.diagnostico != null && item.medicamento != null ? navigation.navigate("Prontuario", { data: item }) : setModalProntuario(true) : navigation.navigate("Prescricao", { data: item })
                                     }}
                                 onClick={() => {
-                                    user?.role == "Paciente" ? Precionado(item) : ""
+                                    user?.role == "Paciente" && Precionado(item) 
                                     statusLista == "Agendada" ? user?.role == "Paciente" ? setModalDesc(true) : "" : null
                                 }}
                             />)

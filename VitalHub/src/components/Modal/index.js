@@ -46,17 +46,30 @@ export const CancelModal = ({ show = false, onAction }) => {
 
 export const ProntuarioModal = ({ show, data, onAction }) => {
     const navigation = useNavigation();
+
+    const [idade, setIdade] = useState()
+
     const Inserir = () => {
         navigation.navigate("Prontuario", { data: data })
     }
+
+
+    useEffect(() => {
+        if (data.paciente != null) {
+            const dataPasciente = new Date(data.paciente.dataNascimento)
+            const teste = new Date()
+            setIdade(Math.floor((teste.getTime() - dataPasciente.getTime()) / (1000 * 60 * 60 * 24 * 365.25)))
+        }
+    }, [data])
+    console.log(data)
     return (
         show &&
         <ModalBackground show={show} marginTop="70px">
             <ModalContent height="auto">
-                <PerfilImage border="10px" padding="30%" source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg' }} />
+                <PerfilImage border="10px" padding="30%" source={{ uri: data.paciente.idNavigation.foto }} />
                 <Title margin="20px 0 0 0">{data.paciente.idNavigation.nome}</Title>
                 <View style={{ flexDirection: "row", gap: 20 }}>
-                    <Text margin="20px 0px" fieldWidth="auto">17 anos</Text>
+                    <Text margin="20px 0px" fieldWidth="auto">{idade} anos</Text>
                     <Text margin="20px 0px" fieldWidth="auto">{data.paciente.idNavigation.email}</Text>
                 </View>
                 <Button padding="0px 0px" onPress={Inserir}>
@@ -75,10 +88,10 @@ export const ConsultaModal = ({ show, onAction }) => {
     const [statusLista, setStatusLista] = useState('');
     const [nivelPrioridade, setNivelPrioridade] = useState(null);
     const [agendamento, setAgendamento] = useState(null);
-    const [isButtonPressed, setIsButtonPressed] = useState(false); 
+    const [isButtonPressed, setIsButtonPressed] = useState(false);
     const navigation = useNavigation();
 
-   
+
     const handleContinue = () => {
         if (isButtonPressed) {
             navigation.replace('Clinica', { agendamento: agendamento });
@@ -115,8 +128,8 @@ export const ConsultaModal = ({ show, onAction }) => {
                                 clickButton={statusLista === 'Rotina'}
                                 onPress={() => {
                                     setNivelPrioridade('07929CCD-218F-4749-A171-ECF7E0E57682'),
-                                    setStatusLista('Rotina'),
-                                    setIsButtonPressed(true);
+                                        setStatusLista('Rotina'),
+                                        setIsButtonPressed(true);
                                 }}
                             />
 
@@ -128,8 +141,8 @@ export const ConsultaModal = ({ show, onAction }) => {
                                 clickButton={statusLista === 'Exame'}
                                 onPress={() => {
                                     setNivelPrioridade('7F09D39C-F2AE-4F3E-BE10-72D76B20450E'),
-                                    setStatusLista('Exame'),
-                                    setIsButtonPressed(true);
+                                        setStatusLista('Exame'),
+                                        setIsButtonPressed(true);
                                 }}
                             />
 
@@ -141,8 +154,8 @@ export const ConsultaModal = ({ show, onAction }) => {
                                 clickButton={statusLista === 'Urgência'}
                                 onPress={() => {
                                     setNivelPrioridade('9AD5E3B8-9032-4A3E-88BA-E2A3510CD081'),
-                                    setStatusLista('Urgência'),
-                                    setIsButtonPressed(true);
+                                        setStatusLista('Urgência'),
+                                        setIsButtonPressed(true);
                                 }}
                             />
                         </SpacedContainer>
@@ -159,7 +172,7 @@ export const ConsultaModal = ({ show, onAction }) => {
                                 })
                             }
                         />
-                        <Button onPress={handleContinue} backgroundColor= {!isButtonPressed && "#ccc"} disabled={!isButtonPressed} borderColor={!isButtonPressed && "#ccc"}>
+                        <Button onPress={handleContinue} backgroundColor={!isButtonPressed && "#ccc"} disabled={!isButtonPressed} borderColor={!isButtonPressed && "#ccc"}>
                             <ButtonTitle colorText="#FFFFFF">Continuar</ButtonTitle>
                         </Button>
                         <TouchableOpacity onPress={onAction}>
@@ -260,15 +273,11 @@ export const DescModal = ({ data, show, onAction }) => {
         navigation.navigate('Local', { clinicaId: data.medicoClinica.clinicaId });
     }
 
-
-
-
-
     return (
         show &&
         <ModalBackground show={show} >
             <ModalContent fieldWidth="95%" height="auto" justify="center">
-                <PerfilImage border="10px" padding="30%" source={{ uri: 'https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg' }} />
+                <PerfilImage border="10px" padding="30%" source={{ uri: data.medicoClinica.medico.idNavigation.foto }} />
                 <Title>{data.medicoClinica.medico.idNavigation.nome}</Title>
                 <SpacedContainer fieldWidth="70%">
                     <Text fieldWidth="auto">{data.medicoClinica.medico.especialidade.especialidade1}</Text>

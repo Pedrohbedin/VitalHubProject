@@ -21,14 +21,14 @@ export function Login({ navigation }) {
 
     async function Logar() {
         await api.post('/Login', {
-            email: "pedro@gmail.com",
-            senha: "pedro1234"
+            email: email,
+            senha: senha
         }).then(async (response) => {
             await AsyncStore.setItem("token", JSON.stringify(response.data))
             navigation.navigate("Main")
         }
         ).catch((error) => {
-            if (error.response && error.response.status === 401) {
+            if (error) {
                 setIsEmailValid(false);
                 setIsSenhaValid(false);
             }

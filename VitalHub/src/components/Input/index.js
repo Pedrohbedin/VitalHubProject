@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 
 const PasswordInput = ({ secureTextChange, value, setValue, valid, secureTextEntry }) => {
     return (
-        <View style={{ width: "90%", alignItems: 'center', flexDirection: "row", borderColor: "#49B3BA", borderWidth: 2, borderRadius: 5 }}>
+        <View style={{ width: "90%", alignItems: 'center', flexDirection: "row", borderColor: valid ? "#49B3BA" : "red", borderWidth: 2, borderRadius: 5 }}>
             <Input
                 margin={"0px"}
                 placeholder="Senha"
@@ -12,7 +12,7 @@ const PasswordInput = ({ secureTextChange, value, setValue, valid, secureTextEnt
                 value={value}
                 onChangeText={txt => setValue(txt)}
                 secureTextEntry={!secureTextEntry}
-                style={valid ? { borderColor: 'transparent' } : { borderColor: 'red' }}
+                style={{ borderColor: 'transparent' }}
                 width={"85%"}
             />
             <TouchableOpacity style={{ padding: 10 }} onPress={() => secureTextChange(!secureTextEntry)}>

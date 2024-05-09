@@ -20,7 +20,7 @@ import * as MediaLibrary from "expo-media-library"
 import * as ImagePicker from "expo-image-picker"
 
 import { useFonts, MontserratAlternates_600SemiBold, MontserratAlternates_700Bold, MontserratAlternates_500Medium } from "@expo-google-fonts/montserrat-alternates"
-import { Quicksand_600SemiBold, Quicksand_500Medium } from "@expo-google-fonts/quicksand"
+import { Quicksand_600SemiBold, Quicksand_500Medium, Quicksand_400Regular } from "@expo-google-fonts/quicksand"
 import { useEffect } from "react";
 
 const Stack = createNativeStackNavigator();
@@ -29,12 +29,13 @@ export default function App() {
 
   useEffect(() => {
     requestGaleria()
-  }) 
+  })
 
   let [fontsLoaded] = useFonts({
     MontserratAlternates_600SemiBold,
     MontserratAlternates_500Medium,
     Quicksand_500Medium,
+    Quicksand_400Regular,
     Quicksand_600SemiBold,
     MontserratAlternates_700Bold,
   });
