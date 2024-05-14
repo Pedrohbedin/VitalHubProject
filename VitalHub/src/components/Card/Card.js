@@ -48,7 +48,7 @@ export const Card = ({
                                     name='clockcircle'
                                     type='antdesign'
                                     color={data.situacao.situacao == "Agendada" ? '#49B3BA' : '#4E4B59'}
-                                /> 15:00</Text>
+                                /> {new Date(data.dataConsulta).getHours()}:00</Text>
                         </View>
                     </View>
                     <View style={{ justifyContent: "flex-end", height: 80 }}>
@@ -94,22 +94,23 @@ export function CardClinica({ data, borderColor, onPress }) {
     )
 }
 
-export function CardMedico({ data, borderColor, onPress, urlFotoPaciente = "https://thumbs.dreamstime.com/b/retrato-exterior-do-doutor-masculino-35801901.jpg" }) {
+export function CardMedico({ data, borderColor, onPress }) {
+
     return (
-        <TouchableWithoutFeedback onPress={onPress}>
-            <CardContainer borderColor={borderColor} style={{
+        <TouchableOpacity onPress={onPress}>
+            <CardContainer borderColor={borderColor} flexDirection="row" style={{
                 marginVertical: 20,
                 marginHorizontal: 20
-            }} flexDirection="row">
+            }}>
                 <View style={{ flex: 1 }}>
-                    <CardImage source={{ uri: `${urlFotoPaciente}`, }} />
+                    <CardImage source={{ uri: `${data.idNavigation.foto}`, }} />
                 </View>
                 <View style={{ flex: 2 }}>
                     <Title textAlign="left" fieldWidth="auto">{data.idNavigation.nome}</Title>
                     <Text textAlign="left" colorText="#8C8A97" fieldWidth="auto" fontFamily="Quicksand_600SemiBold">{data.especialidade.especialidade1}</Text>
                 </View>
             </CardContainer >
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
     )
 }
 

@@ -38,7 +38,7 @@ export function Clinica({ navigation, route }) {
         <Container>
             <Title>Selecionar clínica</Title>
             <FlatList
-                style={{ width: "90%" }}
+                style={{ width: "100%" }}
                 data={clinicaLista}
                 renderItem={({ item }) => <CardClinica data={item} onPress={() => setClinica(item)} borderColor={clinica != null && item.id === clinica.id ? '#496BBA' : '#FFFFFF'} />}
                 keyExtractor={item => item.id}

@@ -158,7 +158,7 @@ const styles = StyleSheet.create(
     nameDateStyle: {
       color: "#ACABB7",
       fontSize: 12,
-      textTransform: 'capitalize'
+      textTransform: 'capitalize',
     },
     numberDateStyle: {
       color: "#5F5C6B",
@@ -168,11 +168,11 @@ const styles = StyleSheet.create(
       color: "white",
       fontSize: 12,
       fontWeight: "bold",
-      textTransform: 'capitalize'
+      textTransform: 'capitalize',
     },
     selectedDateNumberStyle: {
       color: "white",
-      fontSize: 14
+      fontSize: 14,
     },
     selectedContainerStyle: {
       backgroundColor: `#60BFC5`

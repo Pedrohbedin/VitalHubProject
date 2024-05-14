@@ -22,10 +22,14 @@ import * as ImagePicker from "expo-image-picker"
 import { useFonts, MontserratAlternates_600SemiBold, MontserratAlternates_700Bold, MontserratAlternates_500Medium } from "@expo-google-fonts/montserrat-alternates"
 import { Quicksand_600SemiBold, Quicksand_500Medium, Quicksand_400Regular } from "@expo-google-fonts/quicksand"
 import { useEffect } from "react";
+import { PaperProvider } from "react-native-paper";
+import { LogBox } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  // LogBox.ignoreAllLogs();
 
   useEffect(() => {
     requestGaleria()
@@ -51,24 +55,26 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={Login} options={{ title: "Login" }} />
-        <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenha} options={{ title: "EsqueceuSenha" }} />
-        <Stack.Screen name="CodigoEmail" component={CodigoEmail} options={{ title: "CodigoEmail" }} />
-        <Stack.Screen name="NovaSenha" component={NovaSenha} options={{ title: "NovaSenha" }} />
-        <Stack.Screen name="Cadastrar" component={Cadastrar} options={{ title: "Cadastrar" }} />
-        <Stack.Screen name="Perfil" component={Perfil} options={{ title: "Perfil" }} />
-        <Stack.Screen name="Prontuario" component={Prontuario} options={{ title: "Prontuario" }} />
-        <Stack.Screen name="Home" component={Home} options={{ title: "Home" }} />
-        <Stack.Screen name="Clinica" component={Clinica} options={{ title: "Clinica" }} />
-        <Stack.Screen name="Medico" component={Medico} options={{ title: "Medico" }} />
-        <Stack.Screen name="Data" component={DataPage} options={{ title: "Data" }} />
-        <Stack.Screen name="Main" component={Main} options={{ title: "Main" }} />
-        <Stack.Screen name="Local" component={Local} options={{ title: "Local" }} />
-        <Stack.Screen name="Prescricao" component={Prescricao} options={{ title: "Prescricao" }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={Login} options={{ title: "Login" }} />
+          <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenha} options={{ title: "EsqueceuSenha" }} />
+          <Stack.Screen name="CodigoEmail" component={CodigoEmail} options={{ title: "CodigoEmail" }} />
+          <Stack.Screen name="NovaSenha" component={NovaSenha} options={{ title: "NovaSenha" }} />
+          <Stack.Screen name="Cadastrar" component={Cadastrar} options={{ title: "Cadastrar" }} />
+          <Stack.Screen name="Perfil" component={Perfil} options={{ title: "Perfil" }} />
+          <Stack.Screen name="Prontuario" component={Prontuario} options={{ title: "Prontuario" }} />
+          <Stack.Screen name="Home" component={Home} options={{ title: "Home" }} />
+          <Stack.Screen name="Clinica" component={Clinica} options={{ title: "Clinica" }} />
+          <Stack.Screen name="Medico" component={Medico} options={{ title: "Medico" }} />
+          <Stack.Screen name="Data" component={DataPage} options={{ title: "Data" }} />
+          <Stack.Screen name="Main" component={Main} options={{ title: "Main" }} />
+          <Stack.Screen name="Local" component={Local} options={{ title: "Local" }} />
+          <Stack.Screen name="Prescricao" component={Prescricao} options={{ title: "Prescricao" }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 

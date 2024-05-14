@@ -1,4 +1,4 @@
-import { FlatList, TouchableOpacity } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { ButtonTitle, Title } from "../../../components/Title/style";
 import { Button } from "../../../components/Button/style";
 import { DbLink } from "../../../components/Link/style";
@@ -39,7 +39,7 @@ export function Medico({ navigation, route }) {
         <Container>
             <Title>Selecionar médico</Title>
             <FlatList
-                style={{ width: "90%" }}
+                style={{ width: "100%" }}
                 data={medicoLista}
                 renderItem={({ item }) => <CardMedico data={item} onPress={() => setMedico(item)} borderColor={medico != null && item.id === medico.id ? '#496BBA' : '#FFFFFF'} />}
                 keyExtractor={item => item.id}
@@ -48,7 +48,7 @@ export function Medico({ navigation, route }) {
             <Button onPress={handleContinue} disabled={!medico} backgroundColor={!medico && '#ccc'} borderColor={!medico && '#ccc'}>
                 <ButtonTitle colorText="white">Continuar</ButtonTitle>
             </Button>
-            <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Main")}>
                 <DbLink>Cancelar</DbLink>
             </TouchableOpacity>
         </Container>

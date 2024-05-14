@@ -4,8 +4,8 @@ import { DbLink } from "../../../components/Link/style";
 import { ButtonTitle, Title } from "../../../components/Title/style";
 import CalendarComponent from "../../../components/Calender";
 import InputSelect from "../../../components/SelectInput/SelectInput";
-import { View, Animated } from "react-native";
-import { useEffect, useState } from "react";
+import { View } from "react-native";
+import { useState } from "react";
 import { AgendarModal } from "../../../components/Modal";
 import { TouchableOpacity } from "react-native";
 
@@ -50,7 +50,7 @@ export function DataPage({ navigation, route }) {
                 <Button disabled={!horaSelecionada || !dataSelecionado} backgroundColor={!horaSelecionada && '#ccc'} borderColor={!horaSelecionada && '#ccc'} onPress={handleContinue}>
                     <ButtonTitle colorText="#FFFFFF">Confirmar</ButtonTitle>
                 </Button>
-                <TouchableOpacity onPress={() => navigation.navigate('Medico')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Main')}>
                     <DbLink>Cancelar</DbLink>
                 </TouchableOpacity>
             </Container >

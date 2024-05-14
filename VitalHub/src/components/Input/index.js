@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 
 const PasswordInput = ({ secureTextChange, value, setValue, valid, secureTextEntry }) => {
     return (
-        <View style={{ width: "90%", alignItems: 'center', flexDirection: "row", borderColor: valid ? "#49B3BA" : "red", borderWidth: 2, borderRadius: 5 }}>
+        <View style={{ width: "90%", alignItems: 'center', flexDirection: "row", borderColor: "#49B3BA", borderWidth: 2, borderRadius: 5 }}>
             <Input
                 margin={"0px"}
                 placeholder="Senha"

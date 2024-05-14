@@ -108,8 +108,10 @@ export function Local({ navigation, route }) {
                             <MapViewDirections
                                 origin={initialPosition.coords}
                                 destination={{
-                                    latitude: clinica.endereco.latitude,
-                                    longitude: clinica.endereco.longitude,
+                                    // latitude: clinica.endereco.latitude,
+                                    latitude: -23.3,
+                                    // longitude: clinica.endereco.longitude,
+                                    longitude: -46,
                                     latitudeDelta: 0.005,
                                     longitudeDelta: 0.005
                                 }}
@@ -127,8 +129,8 @@ export function Local({ navigation, route }) {
                             <Marker
                                 pinColor="blue"
                                 coordinate={{
-                                    latitude: clinica.endereco.latitude,
-                                    longitude: clinica.endereco.longitude,
+                                    latitude: -23.3,
+                                    longitude: -46,
                                 }}
                                 title='Exemplo de local'
                                 description='Qualquer lugar no meu mapa' />
@@ -136,15 +138,15 @@ export function Local({ navigation, route }) {
                         <Title>{clinica.nomeFantasia}</Title>
                         <Text>{clinica.endereco.cidade}</Text>
                         <Text fieldWidth="90%" textAlign="start" >Endereço</Text>
-                        <InfoInput placeholder={clinica.endereco.logradouro} />
+                        <InfoInput disable={true} placeholder={clinica.endereco.logradouro} />
                         <View style={{ width: "90%", flexDirection: "row", gap: 32, marginTop: 20 }}>
                             <View style={{ flex: 1 }}>
                                 <Text textAlign="start" fieldWidth="100%">numero</Text>
-                                <InfoInput placeholder={`${clinica.endereco.numero}`} fieldWidth="100%*" />
+                                <InfoInput disable={true} placeholder={`${clinica.endereco.numero}`} fieldWidth="100%*" />
                             </View>
                             <View style={{ flex: 1 }}>
                                 <Text textAlign="start" fieldWidth="100%">Cep</Text>
-                                <InfoInput fieldWidth="100%" placeholder={clinica.endereco.cep} />
+                                <InfoInput disable={true} fieldWidth="100%" placeholder={clinica.endereco.cep} />
                             </View>
                         </View>
                         <View style={{ marginTop: 40 }}>

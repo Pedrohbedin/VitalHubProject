@@ -9,14 +9,15 @@ import { Input } from "../../components/Input/style"
 import { SpacedContainer } from "../Container/Style"
 import { BtnListAppointment } from "../BtnListAppointment/BtnListAppointment"
 import { useNavigation } from "@react-navigation/native"
-import React, { useEffect } from 'react';
+import React, { useEffect, Component, Fragment } from 'react';
 import { useState } from "react"
 import moment from "moment"
 import { userDecodeToken } from "../../../utils/Auth"
-import { ActivityIndicator } from "react-native"
 import api from "../../services/services"
+import { SelectList } from "react-native-dropdown-select-list"
+import { Icon } from "react-native-elements"
 
-export const CancelModal = ({ show = false, onAction }) => {
+export const CancelModal = ({ show = false, onAction, onCancel }) => {
 
     return (
         show &&
@@ -32,7 +33,7 @@ export const CancelModal = ({ show = false, onAction }) => {
                 <Button onPress={onAction}>
                     <ButtonTitle colorText="#FFFFFF">CONFIRMAR</ButtonTitle>
                 </Button>
-                <TouchableOpacity onPress={onAction}>
+                <TouchableOpacity onPress={onCancel}>
                     <DbLink>Cancelar</DbLink>
                 </TouchableOpacity>
             </ModalContent>
@@ -90,6 +91,20 @@ export const ConsultaModal = ({ show, onAction }) => {
     const [agendamento, setAgendamento] = useState(null);
     const [isButtonPressed, setIsButtonPressed] = useState(false);
     const navigation = useNavigation();
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState();
+
+    function SyncValues(clinicas) {
+        clinicas.forEach(element => {
+            setItems([
+                { key: `${element.endereco.id}`, value: `${element.endereco.cidade}` }
+            ])
+        });
+    }
+
+    async function ClinicaLoad() {
+        await api.get("/Clinica/ListarTodas").then((response) => SyncValues(response.data)).catch((error) => console.log(error))
+    }
 
 
     const handleContinue = () => {
@@ -102,19 +117,20 @@ export const ConsultaModal = ({ show, onAction }) => {
         setAgendamento({
             ...agendamento,
             prioridadeId: nivelPrioridade,
-            prioridadeLabel: statusLista
+            prioridadeLabel: statusLista,
+            localizacao: value
         });
-    }, [nivelPrioridade, statusLista]);
+    }, [nivelPrioridade, statusLista, value]);
 
     return (
         show && (
-            <Modal transparent animationType="fade" visible={true}>
+            <Modal onShow={ClinicaLoad} transparent animationType="fade" visible={true}>
                 <ModalBackground show={show}>
                     <ModalContent
                         fieldWidth="100%"
-                        height="75%"
+                        height="auto"
                         position="absolute"
-                        padding="10px"
+                        padding="50px 10px"
                         justify="center"
                     >
                         <Title margin="0px 0px 20px 0px">Agendar consulta</Title>
@@ -122,8 +138,8 @@ export const ConsultaModal = ({ show, onAction }) => {
                         <SpacedContainer padding="0px 0px 20px 0px">
                             <BtnListAppointment
                                 backgroundColor="a"
-                                borderColor={'#34898F'}
-                                colorText="#34898F"
+                                borderColor={'#60BFC5'}
+                                colorText="#60BFC5"
                                 textButton={'Rotina'}
                                 clickButton={statusLista === 'Rotina'}
                                 onPress={() => {
@@ -135,8 +151,8 @@ export const ConsultaModal = ({ show, onAction }) => {
 
                             <BtnListAppointment
                                 backgroundColor="a"
-                                borderColor={'#34898F'}
-                                colorText="#34898F"
+                                borderColor={'#60BFC5'}
+                                colorText="#60BFC5"
                                 textButton={'Exame'}
                                 clickButton={statusLista === 'Exame'}
                                 onPress={() => {
@@ -148,8 +164,8 @@ export const ConsultaModal = ({ show, onAction }) => {
 
                             <BtnListAppointment
                                 backgroundColor="a"
-                                borderColor={'#34898F'}
-                                colorText="#34898F"
+                                borderColor={'#60BFC5'}
+                                colorText="#60BFC5"
                                 textButton={'Urgência'}
                                 clickButton={statusLista === 'Urgência'}
                                 onPress={() => {
@@ -160,18 +176,44 @@ export const ConsultaModal = ({ show, onAction }) => {
                             />
                         </SpacedContainer>
                         <Text>Informe a localização desejada</Text>
-                        <Input
-                            placeholder="Informe a localização"
-                            placeholderTextColor="#34898F"
-                            margin="0px 0px 30px 0px"
-                            value={agendamento ? agendamento.localizacao : null}
-                            onChangeText={txt =>
-                                setAgendamento({
-                                    ...agendamento,
-                                    localizacao: txt
-                                })
-                            }
-                        />
+
+                        <View style={{ width: "90%" }}>
+                            <SelectList
+                                onPress={() => ClinicaLoad()}
+                                setSelected={(val) => setValue(val)}
+                                data={items}
+                                boxStyle={{ colorText: "blue" }}
+                                save="value"
+                                placeholder="Informe a localização"
+                                fontFamily="MontserratAlternates_600SemiBold"
+                                boxStyles={{ borderColor: "#60BFC5", borderWidth: 2 }}
+                                inputStyles={{ color: "#34898F" }}
+                                dropdownItemStyles={{ color: "#60BFC5" }}
+                                arrowicon={<Icon
+                                    size={22}
+                                    name='caret-down'
+                                    type='font-awesome'
+                                    color='#34898F'
+                                />}
+                                closeicon={<Icon
+                                    size={22}
+                                    name='close'
+                                    type='antDesign'
+                                    color='#34898F'
+                                />}
+                                searchicon={
+                                    <Icon
+                                        size={22}
+                                        name='search'
+                                        type='antDesign'
+                                        color='#34898F'
+                                    />
+                                }
+                                dropdownStyles={{ borderColor: "#60BFC5", borderWidth: 2 }}
+                                dropdownTextStyles={{ color: "#60BFC5" }}
+                            />
+                        </View>
+
                         <Button onPress={handleContinue} backgroundColor={!isButtonPressed && "#ccc"} disabled={!isButtonPressed} borderColor={!isButtonPressed && "#ccc"}>
                             <ButtonTitle colorText="#FFFFFF">Continuar</ButtonTitle>
                         </Button>

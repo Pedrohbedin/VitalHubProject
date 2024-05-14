@@ -10,41 +10,34 @@ import { useEffect, useState } from "react";
 import AsyncStore from '@react-native-async-storage/async-storage';
 import api from "../../services/services";
 import PasswordInput from "../../components/Input";
+import DialogComponent from "../../components/Dialog";
 
 export function Login({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [isEmailValid, setIsEmailValid] = useState(true);
-    const [isSenhaValid, setIsSenhaValid] = useState(true);
+    const [visible, setVisible] = useState(false);
     const [show, setShow] = useState(false)
 
     async function Logar() {
         await api.post('/Login', {
-            email: email,
-            senha: senha
+            email: "emanuel@gmail.com",
+            senha: "emanuel1234"
         }).then(async (response) => {
             await AsyncStore.setItem("token", JSON.stringify(response.data))
             navigation.navigate("Main")
         }
         ).catch((error) => {
             if (error) {
-                setIsEmailValid(false);
-                setIsSenhaValid(false);
+                setVisible(true)
             }
-            console.log(error)
+            console.log("Deu error")
         })
     }
 
-    useEffect(() => {
-        setIsEmailValid(true)
-        setIsSenhaValid(true)
-    }, [email, senha]);
-
-
-
     return (
         <Container>
+            <DialogComponent visible={visible} contentMessage="Usuário ou senha incorreto" setVisible={setVisible} />
             <LogoVitalHub />
             <Title>Entrar ou criar conta</Title>
 
@@ -55,18 +48,9 @@ export function Login({ navigation }) {
                 placeholderTextColor="#49B3BA"
                 value={email}
                 onChangeText={txt => setEmail(txt)}
-                style={isEmailValid ? {} : { borderColor: 'red' }}
             />
 
-            {/* <Input
-                placeholder="Senha"
-                placeholderTextColor="#49B3BA"
-                value={senha}
-                onChangeText={txt => setSenha(txt)}
-                secureTextEntry={!show}
-                style={isSenhaValid ? {} : { borderColor: 'red' }}
-            /> */}
-            <PasswordInput secureTextChange={setShow} secureTextEntry={show} value={senha} setValue={setSenha} valid={isSenhaValid}/>
+            <PasswordInput secureTextChange={setShow} secureTextEntry={show} value={senha} setValue={setSenha}  />
 
             <GrayLink onPress={() => navigation.navigate('EsqueceuSenha')}>Esqueceu sua senha?</GrayLink>
 

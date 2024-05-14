@@ -9,7 +9,7 @@ export const PerfilImage = styled.Image`
 export const HeaderImage = styled.Image`
     width: 60px;
     height: 60px;
-    border-radius: 10px;
+    border-radius: 5px;
 `
 
 export const CardImage = styled.Image`

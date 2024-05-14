@@ -4,7 +4,7 @@ import { Perfil } from '../Perfil/Perfil';
 import { ContentIcon, TextIcon } from './style';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { userDecodeToken } from '../../../utils/Auth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const BottomTab = createBottomTabNavigator();
 
