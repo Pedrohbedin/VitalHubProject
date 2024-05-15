@@ -23,7 +23,7 @@ export function Prontuario({ navigation, route }) {
     const [consultaAtualizada, setConsultaAtualizada] = useState([]);
 
     async function Salvar() {
-        await api.put('/Consultas/Prontuario', consultaAtualizada).then((response) => console.log(response))
+        await api.put('/Consultas/Prontuario', consultaAtualizada).then((response) => console.log("Consulta atualizada"))
             .catch(error => console.log(error))
         setEditable(false)
     }
@@ -42,7 +42,6 @@ export function Prontuario({ navigation, route }) {
             descricao: descricao,
             diagnostico: diagnostico,
         })
-        console.log(consultaAtualizada)
     }, [descricao, diagnostico, prescricao])
 
 
@@ -57,7 +56,7 @@ export function Prontuario({ navigation, route }) {
     return (
         descricao === null ? <ActivityIndicator /> :
             <ScrollView>
-                <Container>
+                <Container paddingTop="0">
                     <PerfilImage source={{ uri: route.params.data.paciente.idNavigation.foto }} />
                     <Title>{route.params.data.paciente.idNavigation.nome}</Title>
                     <SpacedContainer style={{ width: "auto", gap: 20 }}>

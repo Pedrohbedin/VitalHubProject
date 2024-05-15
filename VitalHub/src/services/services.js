@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Declarar a porta da api
 
-const ip = '192.168.21.78';
+const ip = '172.16.39.91';
 // const ip = '172.16.39.83';
 
 const portaApi = '4466';

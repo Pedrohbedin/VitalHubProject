@@ -28,7 +28,6 @@ export function Perfil({ navigation }) {
     const [rg, setRg] = useState(null)
 
     const [showCamera, setShowCamera] = useState(false);
-    const [uri, setUri] = useState("");
 
 
     useEffect(() => {
@@ -54,7 +53,6 @@ export function Perfil({ navigation }) {
             setCep(response.data.endereco.cep)
             setCidade(response.data.endereco.cidade)
             setRg(response.data.rg)
-            setUri(response.data.idNavigation.foto)
         } catch (error) {
             console.log(error);
         }
@@ -86,7 +84,7 @@ export function Perfil({ navigation }) {
 
     //Fução para alterar a imagem do usuario
 
-    async function AlterarFotoPerfil() {
+    async function AlterarFotoPerfil(uri) {
         const formData = new FormData();
 
         formData.append("Arquivo", {
@@ -105,19 +103,13 @@ export function Perfil({ navigation }) {
         })).catch((error) => console.log(error))
     }
 
-    useEffect(() => {
-        if (uri != null) {
-            AlterarFotoPerfil();
-        }
-    }, [uri])
-
     return (
         user === null || userData === null || dataNascimento === null ?
             < ActivityIndicator />
             :
             user.role === "Paciente" ?
                 <ScrollView>
-                    <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={setUri} />
+                    <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={AlterarFotoPerfil} />
                     <Container paddingTop="0">
                         <View style={{ width: "100%" }}>
                             <PerfilImage source={{ uri: user.foto, }} />
@@ -230,9 +222,9 @@ export function Perfil({ navigation }) {
                     </Container>
                 </ScrollView>
                 :
-                <ScrollView>
-                    <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={setUri} />
-                    <Container>
+                <>
+                    <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={AlterarFotoPerfil} />
+                    <Container paddingTop="0">
                         <View style={{ width: "100%" }}>
                             <PerfilImage source={{ uri: user.foto, }} />
                             <ButtonCamera onPress={() => setShowCamera(true)}>
@@ -270,15 +262,7 @@ export function Perfil({ navigation }) {
                             ]}
                         />
 
-                        <Button onPress={() => setEditable(false)}>
-                            <ButtonTitle colorText="#FFFFFF">Salvar</ButtonTitle>
-                        </Button>
-
-                        <Button onPress={() => setEditable(true)}>
-                            <ButtonTitle colorText="#FFFFFF">Editar</ButtonTitle>
-                        </Button>
-
                     </Container>
-                </ScrollView>
+                </>
     );
 }

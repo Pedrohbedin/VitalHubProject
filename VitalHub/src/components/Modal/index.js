@@ -26,7 +26,7 @@ export const CancelModal = ({ show = false, onAction, onCancel }) => {
         //     animationType="fade"
         //     visible={true}
         // >
-        <ModalBackground>
+        <ModalBackground style={{zIndex: 2}}>
             <ModalContent height="auto">
                 <Title>Cancelar consulta</Title>
                 <Text fontSize="16px" textAlign="center">Ao cancelar essa consulta, abrirá uma possível disponibilidade no seu horário, deseja mesmo cancelar essa consulta?</Text>
@@ -62,10 +62,10 @@ export const ProntuarioModal = ({ show, data, onAction }) => {
             setIdade(Math.floor((teste.getTime() - dataPasciente.getTime()) / (1000 * 60 * 60 * 24 * 365.25)))
         }
     }, [data])
-    console.log(data)
+
     return (
         show &&
-        <ModalBackground show={show} marginTop="70px">
+        <ModalBackground style={{zIndex: 2}} show={show} marginTop="70px">
             <ModalContent height="auto">
                 <PerfilImage border="10px" padding="30%" source={{ uri: data.paciente.idNavigation.foto }} />
                 <Title margin="20px 0 0 0">{data.paciente.idNavigation.nome}</Title>
@@ -124,7 +124,7 @@ export const ConsultaModal = ({ show, onAction }) => {
 
     return (
         show && (
-            <Modal onShow={ClinicaLoad} transparent animationType="fade" visible={true}>
+            <Modal style={{zIndex: 2}} onShow={ClinicaLoad} transparent animationType="fade" visible={true}>
                 <ModalBackground show={show}>
                     <ModalContent
                         fieldWidth="100%"
@@ -262,7 +262,7 @@ export const AgendarModal = ({ show, onConfirm, onCancel, agendamento }) => {
 
     return (
         show &&
-        <ModalBackground show={show} >
+        <ModalBackground style={{zIndex: 2}} show={show} >
             {
                 agendamento
 
@@ -317,7 +317,7 @@ export const DescModal = ({ data, show, onAction }) => {
 
     return (
         show &&
-        <ModalBackground show={show} >
+        <ModalBackground style={{zIndex: 2}} show={show} >
             <ModalContent fieldWidth="95%" height="auto" justify="center">
                 <PerfilImage border="10px" padding="30%" source={{ uri: data.medicoClinica.medico.idNavigation.foto }} />
                 <Title>{data.medicoClinica.medico.idNavigation.nome}</Title>

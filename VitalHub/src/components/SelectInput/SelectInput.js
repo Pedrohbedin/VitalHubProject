@@ -27,8 +27,6 @@ const InputSelect = ({setHoraSelecionada}) => {
     })
 
     setArrayOptions(options)
-    console.log(options)
-
     // pra cada hora sera uma nova option
   }
 

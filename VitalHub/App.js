@@ -29,7 +29,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  // LogBox.ignoreAllLogs();
+  LogBox.ignoreAllLogs();
 
   useEffect(() => {
     requestGaleria()

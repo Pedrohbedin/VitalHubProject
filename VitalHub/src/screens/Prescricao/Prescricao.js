@@ -36,8 +36,8 @@ export function Prescricao({ navigation, route }) {
 
     return (
         <ScrollView>
-            <Container>
-                <PerfilImage source={{ uri: 'https://media.istockphoto.com/id/1226551176/pt/foto/advertisement-concept-side-view-half-face-profile-with-copy-space-of-perfect-smiling-man.jpg?s=612x612&w=0&k=20&c=5Hf34eKWwSFbRKoWfX1GlgxZvjKvURk_Id0PERH2MmE=', }} />
+            <Container paddingTop="0">
+                <PerfilImage source={{ uri: route.params.data.medicoClinica.medico.idNavigation.foto, }} />
                 <Title>Dr. {route.params.data.medicoClinica.medico.idNavigation.nome}</Title>
                 <View style={{ flexDirection: "row", gap: 20 }}>
                     <Text fieldWidth="auto">{route.params.data.medicoClinica.medico.especialidade.especialidade1}</Text>

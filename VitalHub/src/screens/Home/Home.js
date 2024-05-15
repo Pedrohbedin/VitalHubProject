@@ -137,7 +137,7 @@ export function Home({ navigation }) {
                                             statusLista == "Agendada" ?
                                                 setModalCancelar(true)
                                                 :
-                                                user?.role == "Medico" ? item.descricao != null && item.diagnostico != null && item.receita.medicamento != null ? navigation.navigate("Prontuario", { data: item }) : new Date(item.dataConsulta).getTime() < dataAtual.getTime() ? setVisible(true) + setDialogText("COnsulta não realizada") : setModalProntuario(true) : item.descricao != null && item.diagnostico != null && item.receita.medicamento != null ? navigation.navigate("Prescricao", { data: item }) : setVisible(true), setDialogText("Informações não adicionadas")
+                                                user?.role == "Medico" ? item.descricao != null && item.diagnostico != null && item.receita.medicamento != null ? navigation.navigate("Prontuario", { data: item }) : new Date(item.dataConsulta).getTime() < dataAtual.getTime() ? setModalProntuario(true) : setVisible(true) + setDialogText("Consulta não realizada") : item.descricao != null && item.diagnostico != null && item.receita.medicamento != null ? navigation.navigate("Prescricao", { data: item }) : setVisible(true), setDialogText("Informações não adicionadas")
                                         }}
                                     onClick={() => {
                                         user?.role == "Paciente" && Precionado(item)

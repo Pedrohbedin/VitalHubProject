@@ -39,7 +39,6 @@ export function CameraModal({ visible, setUriCameraCapture, setShowCameraModal, 
             const photo = await cameraRef.current.takePictureAsync()
             setPhoto(photo.uri)
 
-            console.log("Referencia de camera: " + cameraRef);
             setOpenModal(true)
         }
     }

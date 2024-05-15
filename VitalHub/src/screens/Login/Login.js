@@ -6,7 +6,7 @@ import { GrayLink, LbLink } from "../../components/Link/style";
 import { Button, BorderedButton } from "../../components/Button/style";
 import { Icon } from "react-native-elements"
 import { Text } from "../../components/Text/style";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AsyncStore from '@react-native-async-storage/async-storage';
 import api from "../../services/services";
 import PasswordInput from "../../components/Input";
@@ -21,8 +21,8 @@ export function Login({ navigation }) {
 
     async function Logar() {
         await api.post('/Login', {
-            email: "emanuel@gmail.com",
-            senha: "emanuel1234"
+            email: email,
+            senha: senha
         }).then(async (response) => {
             await AsyncStore.setItem("token", JSON.stringify(response.data))
             navigation.navigate("Main")
@@ -50,7 +50,7 @@ export function Login({ navigation }) {
                 onChangeText={txt => setEmail(txt)}
             />
 
-            <PasswordInput secureTextChange={setShow} secureTextEntry={show} value={senha} setValue={setSenha}  />
+            <PasswordInput secureTextChange={setShow} secureTextEntry={show} value={senha} setValue={setSenha} />
 
             <GrayLink onPress={() => navigation.navigate('EsqueceuSenha')}>Esqueceu sua senha?</GrayLink>
 
