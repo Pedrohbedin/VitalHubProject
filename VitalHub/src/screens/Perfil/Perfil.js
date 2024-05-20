@@ -8,11 +8,14 @@ import { PerfilForm } from "../../components/Form/style";
 import { userDecodeToken } from "../../../utils/Auth";
 import { Text } from "../../components/Text/style";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { CameraModal } from "../Camera/Camera";
 import { ScrollView } from "react-native";
 import api from "../../services/services";
 import moment from "moment";
+import { DbLink } from "../../components/Link/style";
+import DialogComponent from "../../components/Dialog";
+
 
 
 export function Perfil({ navigation }) {
@@ -26,6 +29,9 @@ export function Perfil({ navigation }) {
     const [cep, setCep] = useState(null)
     const [cidade, setCidade] = useState(null)
     const [rg, setRg] = useState(null)
+    const [dialogText, setDialogText] = useState("")
+    const [visible, setVisible] = useState(false)
+
 
     const [showCamera, setShowCamera] = useState(false);
 
@@ -109,6 +115,8 @@ export function Perfil({ navigation }) {
             :
             user.role === "Paciente" ?
                 <ScrollView>
+                    <DialogComponent visible={visible} contentMessage={dialogText} setVisible={setVisible} />
+
                     <CameraModal getMediaLibrary={true} visible={showCamera} setShowCameraModal={() => setShowCamera(false)} setUriCameraCapture={AlterarFotoPerfil} />
                     <Container paddingTop="0">
                         <View style={{ width: "100%" }}>
@@ -211,7 +219,7 @@ export function Perfil({ navigation }) {
                             </Container>
                         </SpacedContainer>
 
-                        <Button onPress={Salvar}>
+                        <Button onPress={() => { cpf != null && cpf.length == 11 || cep != null && cep.length == 8 || rg != null && rg.length == 9 ? Salvar() : setVisible(true), setDialogText("Informações incorretas") }}>
                             <ButtonTitle colorText="#FFFFFF">Salvar</ButtonTitle>
                         </Button>
 
@@ -219,6 +227,9 @@ export function Perfil({ navigation }) {
                             <ButtonTitle colorText="#FFFFFF">Editar</ButtonTitle>
                         </Button>
 
+                        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                            <DbLink>Sair</DbLink>
+                        </TouchableOpacity>
                     </Container>
                 </ScrollView>
                 :
@@ -261,7 +272,10 @@ export function Perfil({ navigation }) {
                                 editable && { color: '#49B3BA' }
                             ]}
                         />
+                        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
 
+                            <DbLink>Sair</DbLink>
+                        </TouchableOpacity>
                     </Container>
                 </>
     );

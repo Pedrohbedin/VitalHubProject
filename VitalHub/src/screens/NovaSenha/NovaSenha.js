@@ -7,6 +7,7 @@ import { ButtonTitle, Title } from "../../components/Title/style"
 import { Text } from "../../components/Text/style"
 import { useEffect, useState } from "react"
 import api from "../../services/services"
+import DialogComponent from "../../components/Dialog"
 
 export function NovaSenha({ navigation, route }) {
 
@@ -20,7 +21,7 @@ export function NovaSenha({ navigation, route }) {
 
 
     const RedefinirSenha = async () => {
-        if (password == confirmPassword) {
+        if (password == confirmPassword || password != null) {
             await api.put(`/Usuario/AlterarSenha?email=${email}`, {
                 senhaNova: password
             }).then(navigation.navigate("Login"));
@@ -32,6 +33,8 @@ export function NovaSenha({ navigation, route }) {
 
     return (
         <Container>
+            <DialogComponent visible={visible} contentMessage="Usuário ou senha incorreto" setVisible={setVisible} />
+
             <FuncButton onPress={() => navigation.navigate("Login")}>
                 <Icon
                     color="#34898F"

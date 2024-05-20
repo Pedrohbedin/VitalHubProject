@@ -58,7 +58,7 @@ export function Login({ navigation }) {
                 <ButtonTitle>Entrar</ButtonTitle>
             </Button>
 
-            <BorderedButton>
+            {/* <BorderedButton>
                 <Icon
                     color="#496BBA"
                     size={24}
@@ -66,7 +66,7 @@ export function Login({ navigation }) {
                     type="antdesign"
                 />
                 <BorderedButtonTitle>Entrar com Google</BorderedButtonTitle>
-            </BorderedButton>
+            </BorderedButton> */}
 
             <Text margin="20px 0px" fontSize="14px" fontFamily="MontserratAlternates_600SemiBold">
                 Não tem conta?

@@ -6,7 +6,7 @@ import { Text } from "../../components/Text/style";
 import { MiddleTitle } from "../../components/Title/style";
 import { Icon } from "react-native-elements";
 import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../../components/Card/Card";
 import { CancelModal, ConsultaModal, DescModal, ProntuarioModal } from "../../components/Modal";
 import { Navegator } from "../../components/Navegator/Navegator";
@@ -16,6 +16,7 @@ import { userDecodeToken } from "../../../utils/Auth";
 import api from "../../services/services";
 import DialogComponent from "../../components/Dialog";
 import { ToastProvider } from 'react-native-toast-notifications'
+import { useFocusEffect } from "@react-navigation/native";
 
 //Solicita permições de notificação ao iniciar o app
 Notifications.requestPermissionsAsync();
@@ -33,6 +34,12 @@ Notifications.setNotificationHandler({
 })
 
 export function Home({ navigation }) {
+
+    useFocusEffect(
+        React.useCallback(async () => {
+            setUser(await userDecodeToken());
+        }, [])
+      );
 
 
     const [statusLista, setStatusLista] = useState("Agendada");
@@ -126,7 +133,7 @@ export function Home({ navigation }) {
                         data={consultasLista}
                         renderItem={({ item }) =>
                             (item.situacao.situacao == statusLista)
-                            &&
+                             &&
                             (
                                 < Card
                                     role={user?.role}
